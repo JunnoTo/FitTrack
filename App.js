@@ -1,12 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import ExerciseGroups from './components/ExerciseGroups';
+import ExerciseList from './components/ExerciseList';
+import Home from './components/Home';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
+  const Stack = createStackNavigator();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          />
+
+        <Stack.Screen
+          options={{title:'Add an Exercise'}}
+          name="ExerciseGroups"
+          component={ExerciseGroups} 
+          />
+
+          <Stack.Screen
+          name="ExerciseList"
+          component={ExerciseList}
+          options={({ route}) => ({ title:`${route.params.category} Exercises` })}
+          />
+          
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
