@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Abs from './data/Abs'
 import Back from './data/Back'
@@ -8,8 +8,22 @@ import Chest from './data/Chest'
 import Legs from './data/Legs'
 import Shoulders from './data/Shoulders'
 import Triceps from './data/Triceps'
+import { useNavigation } from '@react-navigation/core'
 
 export default function ExerciseList({route}) {
+    const navigation = useNavigation()
+
+
+    /* Simply check where the user needs to be redirected to */
+    const handleExercisePress = (exercise) => {
+        if(category === 'Cardio'){
+            navigation.navigate("TimeDistanceExercise", { exercise });
+        } else{
+            navigation.navigate("WeightExercise", { exercise });
+        }
+        console.log(category);
+    }
+
     const { category } = route.params;
 
     let exercises;
@@ -47,7 +61,9 @@ export default function ExerciseList({route}) {
 
       {exercises.map(exercise => (
         <View key={exercise.id}>
-            <Text>{exercise.name}</Text>
+            <TouchableOpacity onPress={() => handleExercisePress(exercise)}>
+                <Text>{exercise.name}</Text>
+            </TouchableOpacity>
         </View>
         ))}
     </View>
