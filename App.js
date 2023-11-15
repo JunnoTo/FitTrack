@@ -6,6 +6,7 @@ import ExerciseList from './components/ExerciseList';
 import WeightExercise from './components/WeightExercise';
 import TimeDistanceExercise from './components/TimeDistanceExercise';
 import Home from './components/Home';
+import CalorieCalculator from './components/CalorieCalculator';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
@@ -37,8 +38,13 @@ export default function App() {
         />
         
         <Stack.Screen
-        name="TimeDistanceExercise"
-        component={TimeDistanceExercise}
+          name="TimeDistanceExercise"
+          component={TimeDistanceExercise}
+        />
+        
+        <Stack.Screen
+          name="CalorieCalculator"
+          component={CalorieCalculator}
         />
       </Stack.Navigator>
     </NavigationContainer>

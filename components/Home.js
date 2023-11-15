@@ -8,12 +8,21 @@ export default function Home() {
     const addExercise = () => {
         navigation.navigate("ExerciseGroups")
     }
+
+    const calorieCalculator = () => {
+      navigation.navigate("CalorieCalculator")
+    }
   return (
     <View>
 
         <TouchableOpacity
-        onPress={addExercise}>
-            <Text> Add Exercise </Text>
+          onPress={addExercise}>
+        <Text> Add Exercise </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={calorieCalculator}>
+        <Text> Calorie Calculator </Text>
         </TouchableOpacity>
     </View>
   )
