@@ -1,7 +1,11 @@
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 export default function WeightExercise() {
+
     const [ weight, setWeight ] = useState(0);
     const [ reps, setReps ] = useState(0);
 
@@ -24,7 +28,37 @@ export default function WeightExercise() {
         setReps(reps - 1);
         }
     }
+
+    const saveWorkout = async (weight, reps) => {
+      try {
+        const existingWorkouts = await AsyncStorage.getItem('workouts');
+        let workouts = [];
+
+        if (existingWorkouts) {
+          workouts = JSON.parse(existingWorkouts);
+      }
     
+      const currentDate = new Date().toLocaleDateString();
+      const workoutData = {
+        type: 'WeightExercise',
+        weight,
+        reps,
+        date: currentDate,
+      };
+
+      workouts.push(workoutData);
+
+      await AsyncStorage.setItem('workouts', JSON.stringify(workouts));
+
+      alert('Workout saved!');
+      } catch (error) {
+        console.log('Error saving workout', error);
+      }
+    };
+
+    const handleSaveWorkout = () => {
+      saveWorkout(weight, reps);
+    };
 
     return (
         <View >
@@ -56,6 +90,10 @@ export default function WeightExercise() {
             
           <TouchableOpacity  onPress={increaseReps}>
             <Text>+</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={handleSaveWorkout}>
+            <Text>Save Workout</Text>
           </TouchableOpacity>
         </View>
       );

@@ -75,11 +75,11 @@ export default function CalorieCalculator() {
             <View>
                 <Text>Gender: </Text>
                 <TouchableOpacity onPress={() => setGender('male')}>
-                <Text>Male</Text>
+                    <Text>Male</Text>
                 </TouchableOpacity>
                 
                 <TouchableOpacity onPress={() => setGender('female')}>
-                <Text>Female</Text>
+                    <Text>Female</Text>
                 </TouchableOpacity>
 
                 <Button title="Next" onPress={handleNextStep} />
@@ -124,7 +124,6 @@ export default function CalorieCalculator() {
         {step === 5 && (
         <View>
           <Text>Step 5: Select Activity Level</Text>
-          {/* Display buttons for activity levels */}
           {activityLevel.map((activityLevel, index) => (
             <Button
               key={index}
@@ -144,15 +143,3 @@ export default function CalorieCalculator() {
     </View>
   )
 }
-/*
-Harris-Benedict equation:
-    For men: 66,473 + (13,7516 * weight in kilograms) + (5,0033 * height in centimeters) - (6,755 * age) * activitiy
-    For women: 655,0955 + (9,5634 * weight in kilograms) + (1,8496 * height in centimeters) - (4,6756 * age) * activity
-
-    Activity:
-    - 1: Sedentary: BMR * 1,2
-    - 2: Lightly Active: BMR * 1,375
-    - 3: Moderately Active: BMR * 1,55
-    - 4: Very Active: BMR * 1,725
-    - 5: Extra Active: BMR * 1,9
-*/
