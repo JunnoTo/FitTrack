@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useEffect, useState, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native'
 import { useNavigation } from '@react-navigation/core'
@@ -33,7 +33,7 @@ export default function Home() {
       navigation.navigate("CalorieCalculator")
     }
   return (
-    <View>
+    <ScrollView>
 
         <TouchableOpacity
           onPress={addExercise}>
@@ -49,7 +49,7 @@ export default function Home() {
       {savedWorkouts.length > 0 ? (
         savedWorkouts.map((workout, index) => (
           <View key={index}>
-            <Text>Workout Type: {workout.type}</Text>
+            <Text>Exercise: {workout.name}</Text>
             <Text>Weight: {workout.weight}</Text>
             <Text>Reps: {workout.reps}</Text>
             <Text>Date: {workout.date} </Text>
@@ -58,6 +58,6 @@ export default function Home() {
       ) : (
         <Text>No saved workouts</Text>
       )}
-    </View>
+    </ScrollView>
   )
 }

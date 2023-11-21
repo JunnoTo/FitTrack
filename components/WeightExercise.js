@@ -1,11 +1,14 @@
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRoute } from '@react-navigation/native';
 
 
 
-export default function WeightExercise() {
-
+export default function WeightExercise({ route }) {
+  
+    const routes = useRoute();
+    const { exercise } = route.params;
     const [ weight, setWeight ] = useState(0);
     const [ reps, setReps ] = useState(0);
 
@@ -29,7 +32,7 @@ export default function WeightExercise() {
         }
     }
 
-    const saveWorkout = async (weight, reps) => {
+    const saveWorkout = async ( name, weight, reps ) => {
       try {
         const existingWorkouts = await AsyncStorage.getItem('workouts');
         let workouts = [];
@@ -40,7 +43,7 @@ export default function WeightExercise() {
     
       const currentDate = new Date().toLocaleDateString();
       const workoutData = {
-        type: 'WeightExercise',
+        name: exercise,
         weight,
         reps,
         date: currentDate,
@@ -56,8 +59,8 @@ export default function WeightExercise() {
       }
     };
 
-    const handleSaveWorkout = () => {
-      saveWorkout(weight, reps);
+    const handleSaveWorkout = ( name ) => {
+      saveWorkout( name, weight, reps );
     };
 
     return (

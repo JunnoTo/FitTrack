@@ -10,18 +10,17 @@ import Shoulders from './data/Shoulders'
 import Triceps from './data/Triceps'
 import { useNavigation } from '@react-navigation/core'
 
-export default function ExerciseList({route}) {
+export default function ExerciseList({ route }) {
     const navigation = useNavigation()
 
 
     /* Simply check where the user needs to be redirected to */
-    const handleExercisePress = (exercise) => {
+    const handleExercisePress = ( exercise ) => {
         if(category === 'Cardio'){
-            navigation.navigate("TimeDistanceExercise", { exercise });
+            navigation.navigate("TimeDistanceExercise", { exercise: exercise.name });
         } else{
-            navigation.navigate("WeightExercise", { exercise });
+            navigation.navigate("WeightExercise", { exercise: exercise.name });
         }
-        console.log(category);
     }
 
     const { category } = route.params;

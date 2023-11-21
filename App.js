@@ -29,12 +29,13 @@ export default function App() {
         <Stack.Screen
           name="ExerciseList"
           component={ExerciseList}
-          options={({ route}) => ({ title:`${route.params.category} Exercises` })}
+          options={({ route }) => ({ title:`${route.params.category} Exercises` })}
         />
 
         <Stack.Screen
           name="WeightExercise"
           component={WeightExercise}
+          options={({ route }) => ({ title:`${route.params?.exercise} ` })}
         />
         
         <Stack.Screen
