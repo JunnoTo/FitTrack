@@ -1,7 +1,12 @@
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRoute } from '@react-navigation/native';
 
-export default function TimeDistanceExercise() {
+export default function TimeDistanceExercise({ route }) {
+
+    const routes = useRoute();
+    const { exercise } = route.params;
     const [ time, setTime ] = useState(0);
     const [ distance, setDistance ] = useState(0);
 
@@ -24,6 +29,38 @@ export default function TimeDistanceExercise() {
         setDistance(distance - 1);
         }
     }
+
+    const saveWorkout = async ( type, name, time, distance ) => {
+      try {
+        const existingWorkouts = await AsyncStorage.getItem('workouts');
+        let workouts = [];
+
+        if (existingWorkouts) {
+          workouts = JSON.parse(existingWorkouts);
+      }
+    
+      const currentDate = new Date().toLocaleDateString();
+      const workoutData = {
+        type: 'timeDistance',
+        name: exercise,
+        time,
+        distance,
+        date: currentDate,
+      };
+
+      workouts.push(workoutData);
+
+      await AsyncStorage.setItem('workouts', JSON.stringify(workouts));
+
+      alert('Workout saved!');
+      } catch (error) {
+        console.log('Error saving workout', error);
+      }
+    };
+
+    const handleSaveWorkout = ( name ) => {
+      saveWorkout( 'timeDistance', name, time, distance );
+    };
     
 
     return (
@@ -56,6 +93,10 @@ export default function TimeDistanceExercise() {
             
           <TouchableOpacity  onPress={increaseDistance}>
             <Text>+</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={handleSaveWorkout}>
+            <Text>Save Workout</Text>
           </TouchableOpacity>
         </View>
       );

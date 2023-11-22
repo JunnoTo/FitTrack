@@ -32,7 +32,7 @@ export default function WeightExercise({ route }) {
         }
     }
 
-    const saveWorkout = async ( name, weight, reps ) => {
+    const saveWorkout = async ( type, name, weight, reps ) => {
       try {
         const existingWorkouts = await AsyncStorage.getItem('workouts');
         let workouts = [];
@@ -43,6 +43,7 @@ export default function WeightExercise({ route }) {
     
       const currentDate = new Date().toLocaleDateString();
       const workoutData = {
+        type: 'weightRep',
         name: exercise,
         weight,
         reps,
@@ -60,7 +61,7 @@ export default function WeightExercise({ route }) {
     };
 
     const handleSaveWorkout = ( name ) => {
-      saveWorkout( name, weight, reps );
+      saveWorkout( 'weightRep', name, weight, reps );
     };
 
     return (

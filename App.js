@@ -7,7 +7,7 @@ import WeightExercise from './components/WeightExercise';
 import TimeDistanceExercise from './components/TimeDistanceExercise';
 import Home from './components/Home';
 import CalorieCalculator from './components/CalorieCalculator';
-import { StyleSheet, Text, View } from 'react-native';
+import DisplayWorkouts from './components/DisplayWorkouts';
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -35,28 +35,26 @@ export default function App() {
         <Stack.Screen
           name="WeightExercise"
           component={WeightExercise}
-          options={({ route }) => ({ title:`${route.params?.exercise} ` })}
+          options={({ route }) => ({ title:`${route.params.exercise} ` })}
         />
         
         <Stack.Screen
           name="TimeDistanceExercise"
           component={TimeDistanceExercise}
+          options={({ route }) => ({ title:`${route.params.exercise} ` })}
         />
         
         <Stack.Screen
           name="CalorieCalculator"
           component={CalorieCalculator}
         />
+
+        <Stack.Screen
+          name="DisplayWorkouts"
+          component={DisplayWorkouts}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
