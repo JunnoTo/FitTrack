@@ -1,4 +1,4 @@
-import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
+import { ScrollView, View, Text, TouchableOpacity, Alert } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -37,9 +37,11 @@ export default function DisplayWorkouts() {
           <View key={index}>
             <Text>Exercise: {workout.name}</Text>
             <Text>Date: {workout.date}</Text>
+            <Text>Notes: {workout.notes} </Text>
             {workout.type === 'weightRep' && (
               <View>
                 <Text>Weight: {workout.weight}</Text>
+                <Text>Sets: {workout.sets}</Text>
                 <Text>Reps: {workout.reps}</Text>
               </View>
             )}
@@ -49,8 +51,18 @@ export default function DisplayWorkouts() {
                 <Text>Distance: {workout.distance} kilometers</Text>
               </View>
             )}
-            <TouchableOpacity onPress={() => deleteWorkout(index)}>
-                <Text>Delete Workout</Text>
+
+            <TouchableOpacity onPress={() => Alert.alert(
+              'Delete Workout',
+              'Are you sure you want to delete this workout?',
+              [
+                {text: 'Back'},
+                {text: 'Confirm', onPress: () => deleteWorkout(index)},
+              ],
+              {cancelable: false}
+            )
+            }>
+              <Text>Delete Workout</Text>
             </TouchableOpacity>
           </View>
         ))

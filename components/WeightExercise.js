@@ -1,4 +1,4 @@
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native'
+import { View, TextInput, TouchableOpacity, Text } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
@@ -10,7 +10,9 @@ export default function WeightExercise({ route }) {
     const routes = useRoute();
     const { exercise } = route.params;
     const [ weight, setWeight ] = useState(0);
+    const [ sets, setSets ] = useState(0);
     const [ reps, setReps ] = useState(0);
+    const [ notes, setNotes ] = useState('');
 
     const increaseWeight = () => {
         setWeight(weight + 1);
@@ -20,6 +22,16 @@ export default function WeightExercise({ route }) {
         if (weight > 0   ){
         setWeight(weight - 1);
         }
+    }
+
+    const increaseSets = () => {
+      setSets(sets + 1);
+    }
+
+    const decreaseSets = () => {
+      if (sets > 0) {
+        setSets(sets - 1);
+      }
     }
 
     const increaseReps= () => {
@@ -32,7 +44,7 @@ export default function WeightExercise({ route }) {
         }
     }
 
-    const saveWorkout = async ( type, name, weight, reps ) => {
+    const saveWorkout = async ( type, name, weight, sets, reps, notes ) => {
       try {
         const existingWorkouts = await AsyncStorage.getItem('workouts');
         let workouts = [];
@@ -46,7 +58,9 @@ export default function WeightExercise({ route }) {
         type: 'weightRep',
         name: exercise,
         weight,
+        sets,
         reps,
+        notes,
         date: currentDate,
       };
 
@@ -61,7 +75,7 @@ export default function WeightExercise({ route }) {
     };
 
     const handleSaveWorkout = ( name ) => {
-      saveWorkout( 'weightRep', name, weight, reps );
+      saveWorkout( 'weightRep', name, weight, sets, reps, notes );
     };
 
     return (
@@ -81,6 +95,21 @@ export default function WeightExercise({ route }) {
             <Text>+</Text>
           </TouchableOpacity>
 
+          <Text>Sets: </Text>
+          <TouchableOpacity  onPress={decreaseSets}>
+            <Text>-</Text>
+          </TouchableOpacity>
+          
+          <TextInput
+            value={String(sets)}
+            keyboardType="numeric"
+            onChangeText={(text) => setSets(parseInt(text) || 0)}
+            />
+            
+          <TouchableOpacity  onPress={increaseSets}>
+            <Text>+</Text>
+          </TouchableOpacity>
+
           <Text>Reps: </Text>
           <TouchableOpacity  onPress={decreaseReps}>
             <Text>-</Text>
@@ -95,6 +124,14 @@ export default function WeightExercise({ route }) {
           <TouchableOpacity  onPress={increaseReps}>
             <Text>+</Text>
           </TouchableOpacity>
+
+        
+
+          <Text>Notes:</Text>
+          <TextInput 
+            onChangeText={(setNotes)}
+            value={ notes }
+          />
 
           <TouchableOpacity onPress={handleSaveWorkout}>
             <Text>Save Workout</Text>
