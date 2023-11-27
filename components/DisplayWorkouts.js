@@ -1,4 +1,4 @@
-import { ScrollView, View, Text, TouchableOpacity, Alert } from 'react-native'
+import { ScrollView, View, Text, TouchableOpacity, Alert, StyleSheet } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -11,14 +11,17 @@ export default function DisplayWorkouts() {
         try {
             const storedWorkouts = await AsyncStorage.getItem('workouts');
             if (storedWorkouts) {
-              setSavedWorkouts(JSON.parse(storedWorkouts));
+              const parsedWorkouts = JSON.parse(storedWorkouts);
+              const currentDate = new Date().toLocaleDateString('en-GB'); 
+              const filterWorkouts = parsedWorkouts.filter(workout => workout.date === currentDate);
+              setSavedWorkouts(filterWorkouts);
             }
           } catch (error) {
             console.error('Error fetching workouts:', error);
           }
         };
         fetchWorkouts();
-    }, [])
+    }, []);
 
     const deleteWorkout = async ( index ) => {
         try {
@@ -34,7 +37,7 @@ export default function DisplayWorkouts() {
     <ScrollView>
       {savedWorkouts.length > 0 ? (
         savedWorkouts.map((workout, index) => (
-          <View key={index}>
+          <View style={styles.workoutContainer} key={index}>
             <Text>Exercise: {workout.name}</Text>
             <Text>Date: {workout.date}</Text>
             <Text>Notes: {workout.notes} </Text>
@@ -74,3 +77,9 @@ export default function DisplayWorkouts() {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  workoutContainer: {
+    borderWidth: 1,
+  }
+})

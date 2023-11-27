@@ -21,7 +21,7 @@ export default function Home() {
     <View>
 
         <TouchableOpacity onPress={ addExercise }>
-          <Text> Add Exercise </Text>
+          <Text> Add Workout </Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={ calorieCalculator }>
