@@ -1,4 +1,4 @@
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, ToastAndroid, ToastAndroidStatic, Platform, Alert } from 'react-native'
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, ToastAndroid, ToastiOS, Platform, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
