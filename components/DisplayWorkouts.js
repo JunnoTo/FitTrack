@@ -44,7 +44,6 @@ export default function DisplayWorkouts() {
             {workout.type === 'weightRep' && (
               <View>
                 <Text>Weight: {workout.weight}</Text>
-                <Text>Sets: {workout.sets}</Text>
                 <Text>Reps: {workout.reps}</Text>
               </View>
             )}
