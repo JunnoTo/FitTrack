@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ExerciseGroups from './components/ExerciseGroups';
@@ -8,6 +9,7 @@ import TimeDistanceExercise from './components/TimeDistanceExercise';
 import Home from './components/Home';
 import CalorieCalculator from './components/CalorieCalculator';
 import DisplayWorkouts from './components/DisplayWorkouts';
+import CustomExercise from './components/CustomExercise';
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -29,7 +31,15 @@ export default function App() {
         <Stack.Screen
           name="ExerciseList"
           component={ExerciseList}
-          options={({ route }) => ({ title:`${route.params.category} Exercises` })}
+          options={({ route, navigation }) => ({ title:`${route.params.category} Exercises`,
+          headerRight: () => (
+            <Button
+              onPress={() => {
+                navigation.navigate('CustomExercise');
+              }}
+              title="Create Exercise"
+              color="#000"/>
+          ) })}
         />
 
         <Stack.Screen
@@ -52,6 +62,11 @@ export default function App() {
         <Stack.Screen
           name="DisplayWorkouts"
           component={DisplayWorkouts}
+        />
+
+        <Stack.Screen
+          name ="CustomExercise"
+          component={CustomExercise}
         />
       </Stack.Navigator>
     </NavigationContainer>

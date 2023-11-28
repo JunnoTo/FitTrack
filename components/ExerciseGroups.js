@@ -42,6 +42,10 @@ export default function Exercises() {
       <TouchableOpacity onPress={() => handleExercisePress('Triceps')}>
         <Text>Triceps</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => handleExercisePress('Custom')}>
+        <Text>Your Exercises</Text>
+      </TouchableOpacity>
       
     </View>
   )
