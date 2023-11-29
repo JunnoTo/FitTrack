@@ -171,10 +171,10 @@ export default function TimeDistanceExercise({ route }) {
 
     return (
         <View >
-            <Text>Time: </Text>
-            <TouchableOpacity  onPress={decreaseTime}>
-                <Text>-</Text>
-            </TouchableOpacity>
+          <Text>Time: </Text>
+          <TouchableOpacity  onPress={decreaseTime}>
+              <Text>-</Text>
+          </TouchableOpacity>
 
           <TextInput
             value={String(time)}

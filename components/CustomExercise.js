@@ -1,13 +1,15 @@
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNavigation } from '@react-navigation/core'
 
-export default function CustomExercise() {
+export default function CustomExercise({}) {
+    const navigation = useNavigation()
     const [ name, setName ] = useState('');
     const [ category, setCategory ] = useState(null);
-    const [ notes, setNotes ] = useState('');
     const [ showDropdown, setShowDropdown ] = useState(false);
     const categories = ['Abs', 'Back', 'Biceps', 'Cardio', 'Chest', 'Legs', 'Shoulders', 'Triceps'];
+    
 
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown);
@@ -18,7 +20,7 @@ export default function CustomExercise() {
         toggleDropdown();
     }
 
-    const saveCustomExercise = async ( name, category, notes ) => {
+    const saveCustomExercise = async ( name, category) => {
         try{
             const existingWorkouts = await AsyncStorage.getItem('customExercises');
             let exercise = [];
@@ -26,15 +28,25 @@ export default function CustomExercise() {
             if(existingWorkouts) {
                 exercise = JSON.parse(existingWorkouts);
             }
+
+            const isNameUnique = exercise.every(exercise => exercise.name !== name);
+
+            if (!isNameUnique){
+                alert("Exercise with the same name already exists");
+                return;
+            }
             const exerciseData = {
                 name,
                 category,
-                notes,
             };
             exercise.push(exerciseData);
             await AsyncStorage.setItem('customExercises', JSON.stringify(exercise));
 
-            alert('Exercise saved!')
+            if (category === 'Cardio') {
+                navigation.navigate('TimeDistanceExercise' , {exercise: name})
+            } else {
+                navigation.navigate('WeightExercise', { exercise: name})
+            }
         } catch (error) {
             console.log('Error saving exercise ', error);
         }
@@ -42,8 +54,8 @@ export default function CustomExercise() {
 
     const handleSaveExercise = () => {
         if( name !== '' && category !== null){
-        saveCustomExercise(name, category, notes);
-        console.log ('Name: ', name, 'Category: ', category, 'Notes: ', notes);
+        saveCustomExercise(name, category);
+        console.log ('Name: ', name, 'Category: ', category);
         } else {
             alert("Please fill in name and category");
         }
@@ -80,12 +92,6 @@ export default function CustomExercise() {
                 ))}
             </View>
         </Modal>
-        
-        <TextInput
-            placeholder='Notes (Optional)'
-            value={String(notes)}
-            onChangeText={(text) => setNotes(text)}
-        />
 
         <TouchableOpacity
             onPress={handleSaveExercise}>

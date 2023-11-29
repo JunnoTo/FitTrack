@@ -172,10 +172,10 @@ export default function WeightExercise({ route }) {
 
     return (
         <View >
-            <Text>Weight: </Text>
-            <TouchableOpacity  onPress={decreaseWeight}>
-                <Text>-</Text>
-            </TouchableOpacity>
+          <Text>Weight: </Text>
+          <TouchableOpacity  onPress={decreaseWeight}>
+              <Text>-</Text>
+          </TouchableOpacity>
 
           <TextInput
             value={String(weight)}

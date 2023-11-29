@@ -45,13 +45,31 @@ export default function App() {
         <Stack.Screen
           name="WeightExercise"
           component={WeightExercise}
-          options={({ route }) => ({ title:`${route.params.exercise} ` })}
+          options={({ route, navigation }) => ({ title:`${route.params.exercise} `,
+          headerLeft: () => (
+            <Button
+              onPress={() => {
+                navigation.navigate('Home');
+              }}
+              title="Back to Home"/>
+            ),
+            headerRight: () => null,
+          })}
         />
         
         <Stack.Screen
           name="TimeDistanceExercise"
           component={TimeDistanceExercise}
-          options={({ route }) => ({ title:`${route.params.exercise} ` })}
+          options={({ route, navigation }) => ({ title:`${route.params.exercise} `,
+          headerLeft: () => (
+            <Button
+              onPress={() => {
+                navigation.navigate('Home');
+              }}
+              title="Back to Home"/>
+            ),
+            headerRight: () => null,
+          })}
         />
         
         <Stack.Screen
