@@ -8,7 +8,6 @@ import WeightExercise from './components/WeightExercise';
 import TimeDistanceExercise from './components/TimeDistanceExercise';
 import Home from './components/Home';
 import CalorieCalculator from './components/CalorieCalculator';
-import DisplayWorkouts from './components/DisplayWorkouts';
 import CustomExercise from './components/CustomExercise';
 
 export default function App() {
@@ -66,7 +65,7 @@ export default function App() {
               onPress={() => {
                 navigation.navigate('Home');
               }}
-              title="Back to Home"/>
+              title="Home"/>
             ),
             headerRight: () => null,
           })}
@@ -75,11 +74,6 @@ export default function App() {
         <Stack.Screen
           name="CalorieCalculator"
           component={CalorieCalculator}
-        />
-
-        <Stack.Screen
-          name="DisplayWorkouts"
-          component={DisplayWorkouts}
         />
 
         <Stack.Screen

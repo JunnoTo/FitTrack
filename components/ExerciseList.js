@@ -147,6 +147,7 @@ export default function ExerciseList({ route }) {
             return [];
         }
     }
+    
     const handleExercisePress = ( exercise ) => {
         if(exercise.category === 'Cardio' || category === 'Cardio'){
             navigation.navigate("TimeDistanceExercise", { exercise: exercise.name });
@@ -157,8 +158,8 @@ export default function ExerciseList({ route }) {
   return (
     <View>
 
-      {exercises.map(exercise => (
-        <View key={exercise.id}>
+      {exercises.map((exercise, index) => (
+        <View key={index}>
             <TouchableOpacity onPress={() => handleExercisePress(exercise)}>
                 <Text>{exercise.name}</Text>
             </TouchableOpacity>

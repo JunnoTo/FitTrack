@@ -1,4 +1,4 @@
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, ToastAndroid, ToastiOS, Platform, Alert } from 'react-native'
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, ToastAndroid, ToastiOS, Platform, Alert, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
@@ -88,18 +88,17 @@ export default function WeightExercise({ route }) {
           const storedWorkouts = await AsyncStorage.getItem('workouts');
           if (storedWorkouts) {
             const parsedWorkouts = JSON.parse(storedWorkouts);
-            const currentDate = new Date().toLocaleDateString('en-GB');
-            const filterWorkouts = parsedWorkouts.filter(
-              workout => workout.date === currentDate && workout.name === exercise
-            );
+            const filterWorkouts = parsedWorkouts.filter(workout =>  workout.name === exercise);
+            filterWorkouts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
             setThisWorkout(filterWorkouts);
+            console.log(filterWorkouts);
           }
         } catch (error) {
           console.error('Error fetching workouts:', error);
         }
       };
       fetchWorkouts();
-    }, []);
+    }, [exercise]);
     
     const deleteWorkout = async ( index ) => {
       try {
@@ -127,8 +126,7 @@ export default function WeightExercise({ route }) {
           let workouts = JSON.parse(existingWorkout);
 
           const workoutIndex = workouts.findIndex(
-            (workout) => workout.date === thisWorkout[0].date && workout.name === thisWorkout[0].name
-          );
+            (workout) => workout.date === thisWorkout[0].date && workout.name === thisWorkout[0].name);
 
           if(workoutIndex !== -1) {
             workouts[workoutIndex].weight = weight;
@@ -170,8 +168,45 @@ export default function WeightExercise({ route }) {
       }
     };
 
+    const renderWorkoutByDate = () => {
+      const workoutsByDate = {};
+
+      thisWorkout.forEach(workout => {
+        if (!workoutsByDate[workout.date]) {
+          workoutsByDate[workout.date] = [];
+        }
+        workoutsByDate[workout.date].push(workout);
+      });
+      return Object.entries(workoutsByDate).map(([date, workouts]) => (
+        <View key={date}>
+            <Text style={styles.dateTitle}>{date}</Text>
+            {workouts.map((workout, index) => (
+                <View style={[styles.savedWorkoutContainer, selectedWorkout === index && styles.selectedWorkoutContainer]} key={index}>
+                    <TouchableOpacity
+                        onPress={() => handleWorkoutPress(index)}>
+                        <Text>Weight: {workout.weight} kg</Text>
+                        <Text>Reps: {workout.reps} </Text>
+                        <Text>Notes: {workout.notes}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => Alert.alert(
+                        'Delete Workout',
+                        'Are you sure you want to delete this workout?',
+                        [
+                            { text: 'Back' },
+                            { text: 'Confirm', onPress: () => deleteWorkout(date, index) },
+                        ],
+                        { cancelable: false }
+                    )}>
+                        <Text>Delete Workout</Text>
+                    </TouchableOpacity>
+                </View>
+            ))}
+        </View>
+    ));
+};
+
     return (
-        <View >
+        <View style={styles.container}>
           <Text>Weight: </Text>
           <TouchableOpacity  onPress={decreaseWeight}>
               <Text>-</Text>
@@ -216,39 +251,21 @@ export default function WeightExercise({ route }) {
             <Text>Update Workout</Text>
           </TouchableOpacity>
 
-          <View>
-            {thisWorkout.length > 0 && thisWorkout.map((workout, index) => (
-              <View style={[styles.savedWorkoutContainer, selectedWorkout === index && styles.selectedWorkoutContainer]} key={index}>
-                <TouchableOpacity 
-                  key={index}
-                  onPress={() => handleWorkoutPress(index)}>
-                  <Text> Weight: {workout.weight} KG</Text>
-                  <Text> Reps: {workout.reps}</Text>
-                  <Text> Notes: {workout.notes}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => Alert.alert(
-                  'Delete Workout',
-                  'Are you sure you want to delete this workout?',
-                  [
-                    {text: 'Back'},
-                    {text: 'Confirm', onPress: () => deleteWorkout(index)},
-                  ],
-                  {cancelable: false}
-                )
-                }>
-                  <Text>Delete Workout</Text>
-            </TouchableOpacity>
-                </View>
-            ))}
-          </View>
+          <ScrollView>
+            {thisWorkout.length > 0 && renderWorkoutByDate()}
+          </ScrollView>
         </View>
       );
     };
 
     const styles = StyleSheet.create({
+      container:{
+        flex: 1,
+        padding: 10,
+      },
       savedWorkoutContainer: {
         borderWidth: 1,
-        margin: 10,
+        marginHorizontal: 10,
       },
       selectedWorkoutContainer: {
         backgroundColor: 'grey'
