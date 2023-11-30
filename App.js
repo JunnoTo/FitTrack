@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button} from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ExerciseGroups from './components/ExerciseGroups';
@@ -9,22 +9,53 @@ import TimeDistanceExercise from './components/TimeDistanceExercise';
 import Home from './components/Home';
 import CalorieCalculator from './components/CalorieCalculator';
 import CustomExercise from './components/CustomExercise';
+import Icon from "react-native-vector-icons/Ionicons";
 
 export default function App() {
   const Stack = createStackNavigator();
 
+  const defaultHeaderStyle = {
+    headerStyle: {
+      backgroundColor:'#1a1a1a',
+      elevation: 0,
+      shadowOpacity: 0,
+      borderBottomWidth: 0,
+    },
+    headerTintColor: '#D37506',
+    headerTitleStyle:{
+      fontWeight: 'bold',
+    },
+    headerTitleAlign: 'center',
+  };
+
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{...defaultHeaderStyle}}>
         <Stack.Screen
           name="Home"
           component={Home}
         />
 
         <Stack.Screen
-          options={{title:'Add an Exercise'}}
           name="ExerciseGroups"
-          component={ExerciseGroups} 
+          component={ExerciseGroups}
+          options={({ navigation }) => ({
+            title: 'Add an Exercise',
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('CustomExercise');
+                }}
+                >
+                  <Icon
+                    name="add"
+                    size={30}
+                    color="#D37506"
+                  />
+                </TouchableOpacity>
+            )
+          })}
         />
 
         <Stack.Screen
@@ -32,12 +63,17 @@ export default function App() {
           component={ExerciseList}
           options={({ route, navigation }) => ({ title:`${route.params.category} Exercises`,
           headerRight: () => (
-            <Button
+            <TouchableOpacity
               onPress={() => {
                 navigation.navigate('CustomExercise');
               }}
-              title="Create Exercise"
-              color="#000"/>
+              >
+                <Icon
+                  name="add"
+                  size={30}
+                  color="#D37506"
+                />
+              </TouchableOpacity>
           ) })}
         />
 
@@ -46,11 +82,16 @@ export default function App() {
           component={WeightExercise}
           options={({ route, navigation }) => ({ title:`${route.params.exercise} `,
           headerLeft: () => (
-            <Button
-              onPress={() => {
-                navigation.navigate('Home');
-              }}
-              title="Back to Home"/>
+              <TouchableOpacity
+                onPress={() => { navigation.navigate('Home');
+            }}
+            >
+              <Icon
+                name="home"
+                size={30}
+                color="#D37506"
+              />
+            </TouchableOpacity>
             ),
             headerRight: () => null,
           })}
@@ -61,11 +102,16 @@ export default function App() {
           component={TimeDistanceExercise}
           options={({ route, navigation }) => ({ title:`${route.params.exercise} `,
           headerLeft: () => (
-            <Button
-              onPress={() => {
-                navigation.navigate('Home');
-              }}
-              title="Home"/>
+            <TouchableOpacity
+            onPress={() => { navigation.navigate('Home');
+        }}
+        >
+          <Icon
+            name="home"
+            size={30}
+            color="#D37506"
+          />
+        </TouchableOpacity>
             ),
             headerRight: () => null,
           })}
