@@ -1,5 +1,5 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { TouchableOpacity, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ExerciseGroups from './components/ExerciseGroups';
@@ -10,8 +10,10 @@ import Home from './components/Home';
 import CalorieCalculator from './components/CalorieCalculator';
 import CustomExercise from './components/CustomExercise';
 import Icon from "react-native-vector-icons/Ionicons";
+import RandomQuote from './components/RandomQuote';
 
 export default function App() {
+  const [quoteAnimationComplete, setQuoteAnimationComplete] = useState(false);
   const Stack = createStackNavigator();
 
   const defaultHeaderStyle = {
@@ -27,8 +29,14 @@ export default function App() {
     },
     headerTitleAlign: 'center',
   };
+  const handleQuoteAnimationComplete = () => {
+    setQuoteAnimationComplete(true);
+  };
 
   return (
+    <View style={{ flex: 1, backgroundColor: '#121212' }}>
+      {!quoteAnimationComplete && <RandomQuote onComplete={handleQuoteAnimationComplete} />}
+      {quoteAnimationComplete && (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{...defaultHeaderStyle}}>
@@ -128,6 +136,8 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-  );
+      )}
+    </View>
+      );
 }
 
