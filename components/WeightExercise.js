@@ -68,7 +68,7 @@ export default function WeightExercise({ route }) {
         setThisWorkout(filterWorkouts);
       }
       } catch (error) {
-        console.log('Error saving workout', error);
+        console.error('Error saving workout', error);
       }
     };
 
@@ -91,7 +91,6 @@ export default function WeightExercise({ route }) {
             const filterWorkouts = parsedWorkouts.filter(workout =>  workout.name === exercise);
             filterWorkouts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
             setThisWorkout(filterWorkouts);
-            console.log(filterWorkouts);
           }
         } catch (error) {
           console.error('Error fetching workouts:', error);

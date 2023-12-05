@@ -55,7 +55,6 @@ export default function CustomExercise({}) {
     const handleSaveExercise = () => {
         if( name !== '' && category !== null){
         saveCustomExercise(name, category);
-        console.log ('Name: ', name, 'Category: ', category);
         } else {
             alert("Please fill in name and category");
         }

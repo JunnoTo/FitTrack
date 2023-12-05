@@ -11,6 +11,7 @@ import CalorieCalculator from './components/CalorieCalculator';
 import CustomExercise from './components/CustomExercise';
 import Icon from "react-native-vector-icons/Ionicons";
 import RandomQuote from './components/RandomQuote';
+import BodyWeightTrack from './components/BodyWeightTrack';
 
 export default function App() {
   const [quoteAnimationComplete, setQuoteAnimationComplete] = useState(false);
@@ -35,8 +36,10 @@ export default function App() {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#121212' }}>
+      {/* 
       {!quoteAnimationComplete && <RandomQuote onComplete={handleQuoteAnimationComplete} />}
       {quoteAnimationComplete && (
+        */}
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{...defaultHeaderStyle}}>
@@ -134,9 +137,14 @@ export default function App() {
           name ="CustomExercise"
           component={CustomExercise}
         />
+
+        <Stack.Screen
+          name="Body-weight"
+          component={BodyWeightTrack}
+        />
       </Stack.Navigator>
     </NavigationContainer>
-      )}
+    {/* )} */}      
     </View>
       );
 }

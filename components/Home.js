@@ -6,8 +6,8 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 export default function Home() {
     const navigation = useNavigation()
-    const [workoutsByDate, setWorkoutsByDate] = useState({});
-    const [ showNotes, setShowNotes ] = useState(-1);
+    const [ workoutsByDate, setWorkoutsByDate ] = useState({});
+    const [ showNotes, setShowNotes ] = useState({});
   
     const addExercise = () => {
         navigation.navigate("ExerciseGroups")
@@ -17,9 +17,19 @@ export default function Home() {
       navigation.navigate("CalorieCalculator")
     }
 
-    const toggleShowNotes = (index) => {
-      setShowNotes(showNotes === index ? -1 : index);
+    const bodyWeightTrack = () => {
+      navigation.navigate("Body-weight")
     }
+
+    const toggleShowNotes = (date, index) => {
+      setShowNotes(prevShowNotes => ({
+        ...prevShowNotes,
+        [date]: {
+          ...prevShowNotes[date],
+          [index]: !prevShowNotes[date]?.[index]
+        }
+      }));
+    };
 
     useEffect(() => {
       fetchWorkouts();
@@ -37,7 +47,7 @@ export default function Home() {
           if (storedWorkouts) {
               const parsedWorkouts = JSON.parse(storedWorkouts);
 
-              parsedWorkouts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+              parsedWorkouts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).reverse();
               const workoutsGroupedByDate = groupWorkoutsByDate(parsedWorkouts);
               setWorkoutsByDate(workoutsGroupedByDate);
           }
@@ -87,12 +97,13 @@ export default function Home() {
               <Text style={styles.date}>{date}</Text>
             </View>
             {workouts.map((workout, index) => (
-              <TouchableOpacity key={`${date}-${index}`} onPress={() => toggleShowNotes(index)}>
-                <View style={styles.workoutContainer}>
-                  <Icon
-                    name={showNotes === index ? 'chevron-up-outline' : 'chevron-down-outline'}
-                    style={styles.arrowIcon}
-                  />
+                <View key={index} style={styles.workoutContainer}>
+                  <TouchableOpacity key={`${date}-${index}`} onPress={() => toggleShowNotes(date, index)}>
+                    <Icon
+                      name={showNotes[date]?.[index] ? 'chevron-up-outline' : 'chevron-down-outline'}
+                      style={styles.arrowIcon}
+                    />
+                  </TouchableOpacity>
                   <View style={styles.workoutTextContainer}>
                     <View style={styles.workoutHeader}>
                       <Text style={styles.workoutTitle}>{workout.name}</Text>
@@ -109,7 +120,12 @@ export default function Home() {
                       <Text style={styles.workoutDetails}> Distance: {workout.distance} km</Text>
                       </View>
                     )}
-                    {showNotes === index && <Text style={styles.workoutDetails}>Notes: {workout.notes}</Text>}
+                   {showNotes[date]?.[index] &&
+                   <View>
+                      <View style={styles.underline}/>
+                      <Text style={styles.workoutNotes}>Notes: {workout.notes}</Text>
+                    </View>
+                    }
                   </View>
                   <TouchableOpacity
                     onPress={() =>
@@ -128,13 +144,12 @@ export default function Home() {
                     <Icon name="trash" style={styles.deleteIcon} />
                   </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
             ))}
           </View>
         ))}
       </ScrollView>
       <View style={styles.iconContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={bodyWeightTrack}>
           <Icon name="fitness" style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity onPress={addExercise}>
@@ -160,21 +175,25 @@ date: {
   fontWeight: 'bold',
   fontSize: 18,
   color: '#fff',
-  marginBottom: 5,
+  margin: 5,
 },
 workoutContainer: {
   flexDirection: 'row',
   borderWidth: 1,
   borderColor: '#333',
   backgroundColor: '#1a1a1a', 
-  padding: 15,
+  padding: 10,
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 10,
+  marginHorizontal: 5,
 },
 workoutTextContainer: {
   flex: 1,
   paddingRight: 10,
 },
 workoutTitle: {
-  color: '#fff',
+  color: "#D37506",
   fontSize: 16,
   marginBottom: 5,
 },
@@ -201,10 +220,8 @@ icon: {
   color: "#D37506",
 },
 arrowIcon: {
-  fontSize: 25,
+  fontSize: 30,
   color: "#D37506",
-  marginRight: 20,
-  marginTop: 10,
 },
 detailsContainer: {
   flexDirection: 'row',
@@ -212,5 +229,17 @@ detailsContainer: {
 },
 workoutHeader:{
   alignItems: 'center',
+},
+workoutNotes:{
+  color: '#ccc', 
+  fontSize: 14,
+  marginLeft: 50,
+},
+underline: {
+  backgroundColor: "#D37506",
+  height: 1,
+  width: '85%',
+  margin: 5,
+  alignSelf: 'center',
 },
 });
