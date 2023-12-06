@@ -168,7 +168,6 @@ container: {
   backgroundColor: '#121212',
 },
 dateContainer: {
-  paddingHorizontal: 10,
   alignItems: 'center',
 },
 date: {
@@ -185,8 +184,9 @@ workoutContainer: {
   padding: 10,
   justifyContent: 'center',
   alignItems: 'center',
-  borderRadius: 10,
-  marginHorizontal: 5,
+  borderRadius: 5,
+  marginHorizontal: 10,
+  marginBottom:10,
 },
 workoutTextContainer: {
   flex: 1,

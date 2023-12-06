@@ -20,13 +20,14 @@ export default function App() {
   const defaultHeaderStyle = {
     headerStyle: {
       backgroundColor:'#1a1a1a',
-      elevation: 0,
+      elevation: 1,
       shadowOpacity: 0,
-      borderBottomWidth: 0,
+      borderBottomWidth: 3,
+      borderColor: '#333',
     },
     headerTintColor: '#D37506',
     headerTitleStyle:{
-      fontWeight: 'bold',
+      fontSize: 30,
     },
     headerTitleAlign: 'center',
   };
@@ -46,13 +47,14 @@ export default function App() {
         <Stack.Screen
           name="Home"
           component={Home}
+          options={{title: "FitTrack"}}
         />
 
         <Stack.Screen
           name="ExerciseGroups"
           component={ExerciseGroups}
           options={({ navigation }) => ({
-            title: 'Add an Exercise',
+            title: 'Select category',
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => {
@@ -63,6 +65,7 @@ export default function App() {
                     name="add"
                     size={30}
                     color="#D37506"
+                    style={{ marginRight: 10}}
                   />
                 </TouchableOpacity>
             )

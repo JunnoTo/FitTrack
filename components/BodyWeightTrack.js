@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, Dimensions } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, Dimensions, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LineChart } from 'react-native-chart-kit';
 
@@ -88,6 +88,15 @@ const WeightTracker = () => {
           withVerticalLines={false}
         />
       )}
+      <FlatList
+        data={weightEntries.slice().sort((a, b) => new Date(b.date) - new Date(a.date)).reverse()}
+        renderItem={({ item }) => (
+          <>
+          <Text>{item.date} {item.weight}kg</Text>
+          </>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+        />
     </View>
   );
 };
