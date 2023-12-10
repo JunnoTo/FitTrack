@@ -21,6 +21,10 @@ export default function Home() {
       navigation.navigate("Body-weight")
     }
 
+    const routine = () => {
+      navigation.navigate("Routines")
+    }
+
     const toggleShowNotes = (date, index) => {
       setShowNotes(prevShowNotes => ({
         ...prevShowNotes,
@@ -157,6 +161,9 @@ export default function Home() {
         </TouchableOpacity>
         <TouchableOpacity onPress={calorieCalculator}>
           <Icon name="nutrition" style={styles.icon} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={routine}>
+          <Icon name = "body" style={styles.icon}/>
         </TouchableOpacity>
       </View>
     </View>

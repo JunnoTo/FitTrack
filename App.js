@@ -12,6 +12,8 @@ import CustomExercise from './components/CustomExercise';
 import Icon from "react-native-vector-icons/Ionicons";
 import RandomQuote from './components/RandomQuote';
 import BodyWeightTrack from './components/BodyWeightTrack';
+import CreateRoutine from './components/CreateRoutine';
+import ShowRoutines from './components/ShowRoutines';
 
 export default function App() {
   const [quoteAnimationComplete, setQuoteAnimationComplete] = useState(false);
@@ -37,10 +39,10 @@ export default function App() {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#121212' }}>
-      {/* 
+     
       {!quoteAnimationComplete && <RandomQuote onComplete={handleQuoteAnimationComplete} />}
       {quoteAnimationComplete && (
-        */}
+        
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{...defaultHeaderStyle}}>
@@ -145,9 +147,20 @@ export default function App() {
           name="Body-weight"
           component={BodyWeightTrack}
         />
+
+        <Stack.Screen
+          name="CreateRoutine"
+          component={CreateRoutine}
+        />
+
+        <Stack.Screen
+          name="Routines"
+          component={ShowRoutines}
+        />
+        
       </Stack.Navigator>
     </NavigationContainer>
-    {/* )} */}      
+     )}       
     </View>
       );
 }
