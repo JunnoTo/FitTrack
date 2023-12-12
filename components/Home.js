@@ -26,13 +26,14 @@ export default function Home() {
     }
 
     const toggleShowNotes = (date, index) => {
-      setShowNotes(prevShowNotes => ({
-        ...prevShowNotes,
-        [date]: {
-          ...prevShowNotes[date],
-          [index]: !prevShowNotes[date]?.[index]
+      setShowNotes(prevShowNotes => {
+        const newShowNotes = { ...prevShowNotes };
+        if (!newShowNotes[date]) {
+          newShowNotes[date] = {};
         }
-      }));
+        newShowNotes[date][index] = !newShowNotes[date]?.[index];
+        return newShowNotes;
+      });
     };
 
     useEffect(() => {
@@ -56,7 +57,7 @@ export default function Home() {
               setWorkoutsByDate(workoutsGroupedByDate);
           }
       } catch (error) {
-          console.error('Error fetching workouts:', error);
+          console.error('Inside Home component!! Error fetching workouts:', error);
       }
     };
 
@@ -80,7 +81,7 @@ export default function Home() {
         setWorkoutsByDate(updatedWorkoutsByDate);
         await AsyncStorage.setItem('workouts', JSON.stringify(getAllWorkouts(updatedWorkoutsByDate)));
       } catch (error) {
-        console.log('Error deleting workout:', error);
+        console.error('Error deleting workout:', error);
       }
     };
 

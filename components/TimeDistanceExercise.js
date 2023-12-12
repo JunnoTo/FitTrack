@@ -98,15 +98,16 @@ export default function TimeDistanceExercise({ route }) {
       fetchWorkouts();
     }, []);
     
-    const deleteWorkout = async ( index ) => {
+    const deleteWorkout = async (date, index) => {
       try {
-          const updatedWorkouts = thisWorkout.filter((_, i) => i!== index);
-          await AsyncStorage.setItem('workouts', JSON.stringify(updatedWorkouts));
-          setThisWorkout(updatedWorkouts);
+        const updatedWorkouts = thisWorkout.filter((workout, i) => !(i === index && workout.date === date));
+        await AsyncStorage.setItem('workouts', JSON.stringify(updatedWorkouts));
+        setThisWorkout(updatedWorkouts);
       } catch (error) {
-          console.log('Error deleting workout:', error);
+        console.log('Error deleting workout:', error);
       }
     };
+    
 
     const handleWorkoutPress = (index) => {
       if(selectedWorkout === index){
@@ -125,22 +126,22 @@ export default function TimeDistanceExercise({ route }) {
 
     const updateWorkout = async () => {
       try {
-        if(selectedWorkout !== null){
-        const existingWorkout = await AsyncStorage.getItem('workouts');
-        if(existingWorkout) {
-          let workouts = JSON.parse(existingWorkout);
-
-          const workoutIndex = workouts.findIndex(
-            (workout) => workout.date === thisWorkout[0].date && workout.name === thisWorkout[0].name
-          );
-
-          if(workoutIndex !== -1) {
-            workouts[workoutIndex].time = time;
-            workouts[workoutIndex].distance = distance;
-            workouts[workoutIndex].notes = notes;
-
-            await AsyncStorage.setItem('workouts', JSON.stringify(workouts));
-            clearFields();
+        if (selectedWorkout !== null) {
+          const existingWorkout = await AsyncStorage.getItem('workouts');
+          if (existingWorkout) {
+            let workouts = JSON.parse(existingWorkout);
+    
+            const workoutIndex = workouts.findIndex(
+              (workout) => workout.date === thisWorkout[selectedWorkout].date && workout.name === exercise
+            );
+    
+            if (workoutIndex !== -1) {
+              workouts[workoutIndex].weight = weight;
+              workouts[workoutIndex].reps = reps;
+              workouts[workoutIndex].notes = notes;
+    
+              await AsyncStorage.setItem('workouts', JSON.stringify(workouts));
+              clearFields();
 
             if(Platform.OS === 'android') {
               ToastAndroid.showWithGravityAndOffset(
