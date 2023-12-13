@@ -11,14 +11,21 @@ const exerciseData = {
         ],
     back:[
             {id: 1, name: 'Barbell Row'},
-            {id: 2, name: 'Chin-Ups'},
-            {id: 3, name: 'Deadlift'},
-            {id: 4, name: 'Good Morning'},
-            {id: 5, name: 'Hammer Strength Row'},
-            {id: 6, name: 'Lat Pulldown'},
-            {id: 7, name: 'Machine Shrug'},
-            {id: 8, name: 'Pendlay Row'},
-            {id: 9, name: 'Rack Pull'},
+            {id: 2, name: 'Barbell Shrug'},
+            {id: 3, name: 'Chin up'},
+            {id: 4, name: 'Deadlift'},
+            {id: 5, name: 'Dumbell Row'},
+            {id: 6, name: 'Good Morning'},
+            {id: 7, name: 'Hammer Strength Row'},
+            {id: 8, name: 'Lat Pulldown'},
+            {id: 9, name: 'Machine Shrug'},
+            {id: 10, name: 'Neutral Chin Up'},
+            {id: 11, name: 'Pendlay Row'},
+            {id: 12, name:'Pull Up'},
+            {id: 12, name:'Rack Pull'},
+            {id: 12, name:'Seated Cable Row'},
+            {id: 12, name:'Straight-Arm Cable Pushdown'},
+            {id: 12, name:'T-Bar Row'},
         ],
     biceps:[
             {id: 1, name: 'Barbell Curl'},
@@ -29,7 +36,6 @@ const exerciseData = {
             {id: 6, name: 'Incline Dumbbell Curl'},
             {id: 7, name: 'Preacher Curl'},
             {id: 8, name: 'Seated Machine Curl'},
-            {id: 9, name: 'Spider Curl'},
         ],
     cardio: [
             {id: 1, name: 'Cycling'},
@@ -43,14 +49,12 @@ const exerciseData = {
         ],
     chest:[
             {id: 1, name: 'Barbell Bench Press'},
-            {id: 2, name: 'Chest Dip'},
+            {id: 2, name: 'Cable Crossover'},
             {id: 3, name: 'Dumbbell Fly'},
             {id: 4, name: 'Incline Bench Press'},
             {id: 5, name: 'Pec Deck'},
             {id: 6, name: 'Push-Ups'},
-            {id: 7, name: 'Cable Crossover'},
             {id: 8, name: 'Seated Machine Fly'},
-            {id: 9, name: 'Wide Grip Pull-Ups'},
         ],
     legs:[
             {id: 1, name: 'Calf Raise'},
@@ -62,6 +66,7 @@ const exerciseData = {
             {id: 7, name: 'Squat'},
             {id: 8, name: 'Step-Up'},
             {id: 9, name: 'Hip Abduction'},
+            {id: 10, name: 'Leg Curl'},
         ],
     shoulders: [
             {id: 1, name: 'Arnold Dumbbell Press'},
@@ -84,6 +89,7 @@ const exerciseData = {
             {id: 7, name: 'Rope Push Down'},
             {id: 8, name: 'Close Grip Bench Press'},
             {id: 9, name: 'V-Bar Push Down'},
+            {id: 10, name: 'Skull Crusher'}
         ],
 };
 export default exerciseData;

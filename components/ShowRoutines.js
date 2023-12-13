@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import exerciseData from '../exerciseData';
 
+
+// TODO: Add exercises to existing routines
 export default function RoutineScreen() {
   const navigation = useNavigation();
   const [savedRoutines, setSavedRoutines] = useState([]);
@@ -37,6 +39,7 @@ export default function RoutineScreen() {
       }
   }
   };
+
   const fetchRoutines = async () => {
     try {
       const storedRoutines = await AsyncStorage.getItem('workoutRoutine');
@@ -53,8 +56,45 @@ export default function RoutineScreen() {
     }
   };
 
+  const removeExercise = async (routineName, exerciseToBeRemoved) => {
+    try {
+      const updatedRoutines = savedRoutines.map((routine) => {
+        if (routine.name === routineName) {
+          return {
+            ...routine,
+            exercises: routine.exercises.filter((exercise) => exercise !== exerciseToBeRemoved),
+          };
+        }
+        return routine;
+      });
+      setSavedRoutines(updatedRoutines);
+      await AsyncStorage.setItem('workoutRoutine', JSON.stringify(updatedRoutines));
+    } catch (error) {
+      console.error('Error removing exercise: ', error);
+    }
+  };
+  
+  const handleRemove = (routineName, exercise) => {
+    if(routineName && exercise) {
+      removeExercise(routineName, exercise);
+    }
+  };
+
+  const deleteRoutine = async(routineName, index) => {
+    try {
+      const updatedRoutines = [...savedRoutines];
+      updatedRoutines.splice(index, 1);
+
+      setSavedRoutines(updatedRoutines);
+
+      await AsyncStorage.setItem('workoutRoutine', JSON.stringify(fetchRoutines(updatedRoutines)));
+    } catch (error) {
+      console.error('Error deleting routine: ', error);
+    }
+  }
+
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <ScrollView>
       <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>
         Your Saved Routines
       </Text>
@@ -62,10 +102,18 @@ export default function RoutineScreen() {
         savedRoutines.map((routine, index) => (
           <View key={index} style={{ marginBottom: 10 }}>
             <Text>{routine.name}</Text>
+            <TouchableOpacity onPress={() => deleteRoutine(routine.name, index)}>
+              <Text>Delete routine</Text>
+            </TouchableOpacity>
             {routine.exercises.map((exercise, exerciseIndex) => (
-              <TouchableOpacity key={exerciseIndex} onPress={() => handleExercisePress(exercise)}>
-                <Text>{exercise}</Text>
-              </TouchableOpacity>
+              <View key={exerciseIndex}>
+                <TouchableOpacity onPress={() => handleExercisePress(exercise)}>
+                  <Text>{exercise}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleRemove(routine.name, exercise)}>
+                  <Text>Remove</Text>
+                </TouchableOpacity>
+              </View>
             ))}
           </View>
         ))
@@ -76,6 +124,6 @@ export default function RoutineScreen() {
       <TouchableOpacity onPress={createRoutine}>
         <Text>Create Routine</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }

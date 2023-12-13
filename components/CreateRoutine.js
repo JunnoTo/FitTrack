@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, TextInput, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, FlatList, TextInput, Alert, Touchable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import exerciseData from '../exerciseData';
 
@@ -7,7 +7,23 @@ export default function CreateRoutineScreen() {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedExercises, setSelectedExercises] = useState([]);
     const [routineName, setRoutineName] = useState('');
-  
+    const [customExercises, setCustomExercises] = useState([]);
+    
+    useEffect(() => {
+      fetchCustomExercises();
+    }, []);
+
+    const fetchCustomExercises = async () => {
+      try {
+        const storedCustomExercises = await AsyncStorage.getItem('customExercises');
+        if (storedCustomExercises) {
+          const parsedCustomExercises = JSON.parse(storedCustomExercises);
+          setCustomExercises(parsedCustomExercises);
+        }
+      } catch (error){
+        console.error('Error fetching custom exercises: ', error);
+      }
+    };
   
     const handleCategoryToggle = (category) => {
       setSelectedCategory(category === selectedCategory ? null : category);
@@ -23,26 +39,32 @@ export default function CreateRoutineScreen() {
     };
   
     const saveRoutine = async () => {
-        try {
-          const storedRoutines = await AsyncStorage.getItem('workoutRoutine');
-          const existingRoutines = storedRoutines ? JSON.parse(storedRoutines) : [];
+      try {
+        const storedRoutines = await AsyncStorage.getItem('workoutRoutine');
+        let existingRoutines = storedRoutines ? JSON.parse(storedRoutines) : [];
     
-          const newRoutine = { name: routineName, exercises: selectedExercises };
-          const updatedRoutines = [...existingRoutines, newRoutine];
-    
-          await AsyncStorage.setItem('workoutRoutine', JSON.stringify(updatedRoutines));
-        } catch (error) {
-          console.error('Error saving routine:', error);
+        if (!Array.isArray(existingRoutines)) {
+          console.error('Data retrieved from AsyncStorage is not an array:', existingRoutines);
+          existingRoutines = [];
         }
-      };
+    
+        const newRoutine = { name: routineName, exercises: selectedExercises };
+        const updatedRoutines = [...existingRoutines, newRoutine];
+    
+        await AsyncStorage.setItem('workoutRoutine', JSON.stringify(updatedRoutines));
+      } catch (error) {
+        console.error('Error saving routine:', error);
+      }
+    };
 
     const renderExercises = () => {
       if (!selectedCategory) {
         return <Text>Select a category</Text>;
       }
   
-      const exercises = exerciseData[selectedCategory.toLowerCase()];
-  
+    const exercises = exerciseData[selectedCategory.toLowerCase()];
+
+    
       return (
         <View>
           <FlatList
@@ -69,6 +91,22 @@ export default function CreateRoutineScreen() {
       saveRoutine();
       Alert.alert('Routine Saved', 'Your routine has been saved successfully.');
     };
+
+    const renderCustomExercises = () => {
+      if (customExercises.length === 0) {
+        return <Text>No custom exercises found</Text>;
+      }
+      return (
+        <View>
+          <Text>Custom Exercises:</Text>
+          {customExercises.map((exercise, index) => (
+            <TouchableOpacity key={index} onPress={() => handleExerciseSelection(exercise.name)}>
+              <Text>{exercise.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      );
+    };
   
     return (
       <View>
@@ -87,7 +125,8 @@ export default function CreateRoutineScreen() {
             {selectedCategory === category && renderExercises()}
           </View>
         ))}
-                  <Text>Selected Exercises:</Text>
+        {renderCustomExercises()}
+          <Text>Selected Exercises:</Text>
           {selectedExercises.map((exercise, index) => (
             <Text key={index}>{exercise}</Text>
           ))}
