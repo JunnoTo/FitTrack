@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import exerciseData from '../exerciseData';
@@ -53,14 +53,34 @@ export default function ExerciseList({ route }) {
   };
 
   return (
-    <View>
+    <ScrollView style={styles.container}>
       {exercises.map((exercise, index) => (
         <TouchableOpacity key={index} onPress={() => handleExercisePress(exercise)}>
-          <View>
-            <Text>{exercise.name}</Text>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{exercise.name}</Text>
           </View>
         </TouchableOpacity>
       ))}
-    </View>
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+    backgroundColor: '#121212'
+  },
+  titleContainer:{
+    flexDirection:'row',
+    borderWidth: 1,
+    borderColor: '#333',
+    alignItems:'center',
+    justifyContent:'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  title:{
+    fontSize: 25,
+    color: '#ccc',
+  },
+});

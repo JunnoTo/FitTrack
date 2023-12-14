@@ -154,17 +154,24 @@ export default function Home() {
         ))}
       </ScrollView>
       <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={bodyWeightTrack}>
+        <TouchableOpacity style={styles.footerSlot} onPress={bodyWeightTrack}>
           <Icon name="fitness" style={styles.icon} />
+          <Text style={styles.footerText}>Weight Log</Text>
+          <View style={styles.separator} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={addExercise}>
+        <TouchableOpacity style={styles.footerSlot} onPress={addExercise}>
           <Icon name="add-circle" style={styles.icon} />
+          <Text style={styles.footerText}>Add Workout</Text>
+          <View style={styles.separator} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={calorieCalculator}>
+        <TouchableOpacity style={styles.footerSlot} onPress={calorieCalculator}>
           <Icon name="nutrition" style={styles.icon} />
+          <Text style={styles.footerText}>Calorie Tool</Text>
+          <View style={styles.separator} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={routine}>
-          <Icon name = "body" style={styles.icon}/>
+        <TouchableOpacity style={styles.footerSlot} onPress={routine}>
+          <Icon name ="barbell" style={styles.icon}/>
+          <Text style={styles.footerText}>Routines</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -221,7 +228,9 @@ iconContainer: {
   flexDirection: 'row',
   justifyContent: 'space-around',
   backgroundColor: '#1a1a1a',
-  paddingVertical: 15,
+  paddingVertical: 10,
+  borderWidth: 1,
+  borderColor: '#333',
 },
 icon: {
   fontSize: 40,
@@ -249,5 +258,11 @@ underline: {
   width: '85%',
   margin: 5,
   alignSelf: 'center',
+},
+footerSlot:{
+  alignItems: 'center',
+},
+footerText: {
+  color:'#ccc',
 },
 });

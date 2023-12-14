@@ -14,14 +14,22 @@ export default function WeightExercise({ route }) {
     const [ notes, setNotes ] = useState('');
     const [ thisWorkout, setThisWorkout ] = useState([]);
     const [ selectedWorkout, setSelectedWorkout ] = useState(null);
+    const [ showTooltip, setShowTooltip ] = useState(true);
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setShowTooltip(false);
+      }, 6000);
+      return () => clearTimeout(timer);
+    }, []);
 
     const increaseWeight = () => {
-        setWeight(weight + 1);
+        setWeight(weight + 2.5);
     }
 
     const decreaseWeight = () => {
         if (weight > 0   ){
-        setWeight(weight - 1);
+        setWeight(weight - 2.5);
         }
     }
 
@@ -64,7 +72,7 @@ export default function WeightExercise({ route }) {
       const storedWorkouts = await AsyncStorage.getItem('workouts');
       if (storedWorkouts) {
         const parsedWorkouts = JSON.parse(storedWorkouts);
-        const filterWorkouts = parsedWorkouts.filter(workout => workout.date === currentDate && workout.name === exercise);
+        const filterWorkouts = parsedWorkouts.filter(workout => workout.name === exercise);
         setThisWorkout(filterWorkouts);
       }
       } catch (error) {
@@ -101,20 +109,29 @@ export default function WeightExercise({ route }) {
     
     const deleteWorkout = async (date, index) => {
       try {
-        const updatedWorkouts = thisWorkout.filter((workout, i) => !(i === index && workout.date === date));
+        const updatedWorkouts = thisWorkout.filter((workout, i) => !(i === index));
         await AsyncStorage.setItem('workouts', JSON.stringify(updatedWorkouts));
         setThisWorkout(updatedWorkouts);
       } catch (error) {
-        console.log('Error deleting workout:', error);
+        console.error('Error deleting workout:', error);
       }
     };
 
     const handleWorkoutPress = (index) => {
-      setSelectedWorkout(index);
-
-      setWeight(thisWorkout[index].weight);
-      setReps(thisWorkout[index].reps);
-      setNotes(thisWorkout[index].notes);
+      
+      const newSelectedWorkout = selectedWorkout === index ? -1 : index;
+    
+      setSelectedWorkout(newSelectedWorkout);
+    
+      if (newSelectedWorkout === -1) {
+        setWeight(0);
+        setReps(0);
+        setNotes('');
+      } else {
+        setWeight(thisWorkout[index].weight);
+        setReps(thisWorkout[index].reps);
+        setNotes(thisWorkout[index].notes);
+      }
     };
 
     const updateWorkout = async () => {
@@ -134,21 +151,27 @@ export default function WeightExercise({ route }) {
               workouts[workoutIndex].notes = notes;
     
               await AsyncStorage.setItem('workouts', JSON.stringify(workouts));
-              clearFields();
-            if(Platform.OS === 'android') {
-              ToastAndroid.showWithGravityAndOffset(
-                'Workout updated successfully!',
-                ToastAndroid.LONG,
-                ToastAndroid.BOTTOM,
-                25,
-                50
+              if(Platform.OS === 'android') {
+                ToastAndroid.showWithGravityAndOffset(
+                  'Workout updated successfully!',
+                  ToastAndroid.LONG,
+                  ToastAndroid.BOTTOM,
+                  25,
+                  50
               );
             } else if(Platform.OS === 'ios') {
               ToastiOS.Show('Workout updated successfully!', ToastiOS.LONG);
-            } 
-            const updatedWorkout = workouts[workoutIndex];
-            setThisWorkout(workouts);
+            }
+
+            const storedWorkouts = await AsyncStorage.getItem('workouts');
+            if (storedWorkouts) {
+              const parsedWorkouts = JSON.parse(storedWorkouts);
+              const filterWorkouts = parsedWorkouts.filter(workout => workout.name === exercise);
+              setThisWorkout(filterWorkouts);
+            }
+
             setSelectedWorkout(null);
+            clearFields();
           }
         }
       } else if(Platform.OS === 'android') {
@@ -178,77 +201,96 @@ export default function WeightExercise({ route }) {
       });
       return Object.entries(workoutsByDate).map(([date, workouts]) => (
         <View key={date}>
-            <Text style={styles.dateTitle}>{date}</Text>
-            {workouts.map((workout, index) => (
-                <View style={[styles.savedWorkoutContainer, selectedWorkout === index && styles.selectedWorkoutContainer]} key={index}>
-                    <TouchableOpacity
-                        onPress={() => handleWorkoutPress(index)}>
-                        <Text>Weight: {workout.weight} kg</Text>
-                        <Text>Reps: {workout.reps} </Text>
-                        <Text>Notes: {workout.notes}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => Alert.alert(
-                        'Delete Workout',
-                        'Are you sure you want to delete this workout?',
-                        [
-                            { text: 'Back' },
-                            { text: 'Confirm', onPress: () => deleteWorkout(date, index) },
-                        ],
-                        { cancelable: false }
-                    )}>
-                        <Text>Delete Workout</Text>
-                    </TouchableOpacity>
-                </View>
-            ))}
+          <Text style={styles.dateTitle}>{date}</Text>
+          {workouts.map((workout, index) => (
+            <View style={[styles.savedWorkoutContainer, selectedWorkout === index && styles.selectedWorkoutContainer]} key={index}>
+              <TouchableOpacity onPress={() => handleWorkoutPress(index)}>
+                <Text style={styles.workoutText}>Weight: {workout.weight} kg</Text>
+                <Text style={styles.workoutText}>Reps: {workout.reps}</Text>
+                <Text style={styles.workoutText}>Notes: {workout.notes}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => Alert.alert(
+                'Delete Workout',
+                'Are you sure you want to delete this workout?',
+                [
+                  { text: 'Back' },
+                  { text: 'Confirm', onPress: () => deleteWorkout(date, index) },
+                ],
+                { cancelable: false }
+              )} style={styles.deleteButton}>
+                <Text style={styles.deleteButtonText}>Delete Workout</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
         </View>
-    ));
-};
+      ));
+    };
 
     return (
-        <View style={styles.container}>
-          <Text>Weight: </Text>
-          <TouchableOpacity  onPress={decreaseWeight}>
-              <Text>-</Text>
-          </TouchableOpacity>
+      <View style={styles.container}>
+        {showTooltip && (
+          <View style={styles.tooltip}>
+            <Text style={styles.tooltipText}>Tap on a workout to update</Text>
+          </View>
+      )}
+        <View style={styles.numberInputContainer}>
+          <View style={styles.inputRow}>
+            <Text style={styles.numberInputTitle}>Weight</Text>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity onPress={decreaseWeight}>
+                <Text style={styles.numberInputTitle}>-</Text>
+              </TouchableOpacity>
+    
+              <TextInput
+                value={String(weight)}
+                keyboardType="numeric"
+                style={styles.numberInputField}
+                onChangeText={(text) => setWeight(parseInt(text) || 0)}
+              />
+    
+              <TouchableOpacity onPress={increaseWeight}>
+                <Text style={styles.numberInputTitle}>+</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+    
+          <View style={styles.inputRow}>
+            <Text style={styles.numberInputTitle}>Reps</Text>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity onPress={decreaseReps}>
+                <Text style={styles.numberInputTitle}>-</Text>
+              </TouchableOpacity>
+    
+              <TextInput
+                value={String(reps)}
+                keyboardType="numeric"
+                style={styles.numberInputField}
+                onChangeText={(text) => setReps(parseInt(text) || 0)}
+              />
+    
+              <TouchableOpacity onPress={increaseReps}>
+                <Text style={styles.numberInputTitle}>+</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
 
-          <TextInput
-            value={String(weight)}
-            keyboardType="numeric"
-            onChangeText={(text) => setWeight(parseInt(text) || 0)}
-            />
-
-          <TouchableOpacity  onPress={increaseWeight}>
-            <Text>+</Text>
-          </TouchableOpacity>
-
-          <Text>Reps: </Text>
-          <TouchableOpacity  onPress={decreaseReps}>
-            <Text>-</Text>
-          </TouchableOpacity>
-          
-          <TextInput
-            value={String(reps)}
-            keyboardType="numeric"
-            onChangeText={(text) => setReps(parseInt(text) || 0)}
-            />
-            
-          <TouchableOpacity  onPress={increaseReps}>
-            <Text>+</Text>
-          </TouchableOpacity>
-
-          <Text>Notes:</Text>
           <TextInput 
             onChangeText={(setNotes)}
+            placeholder="Notes:"
+            multiline={true}
+            style={styles.textInput}
             value={ notes }
           />
+          <View style={styles.saveEditButtonContainer}>
+            <TouchableOpacity style={styles.saveButton} onPress={handleSaveWorkout}>
+              <Text style={styles.buttonTitle}>Save</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity onPress={handleSaveWorkout}>
-            <Text>Save Workout</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={updateWorkout}>
-            <Text>Update Workout</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.editButton}onPress={updateWorkout}>
+              <Text style={styles.buttonTitle}>Update</Text>
+            </TouchableOpacity>
+          </View>
 
           <ScrollView>
             {thisWorkout.length > 0 && renderWorkoutByDate()}
@@ -258,15 +300,118 @@ export default function WeightExercise({ route }) {
     };
 
     const styles = StyleSheet.create({
-      container:{
+      container: {
         flex: 1,
+        backgroundColor: '#121212',
+        padding: 20,
+      },
+      numberInputContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+      },
+      inputRow: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 10,
+      },
+      numberInputTitle: {
+        color: '#ccc',
+        fontSize: 32,
+        marginRight: 10,
+      },
+      buttonContainer: {
+        flexDirection: 'row',
+        marginTop: 5,
+      },
+      numberInputField: {
+        fontSize: 30,
+        color: '#ccc',
+        width: 100,
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: '#333',
+        textAlign: 'center',
+        marginHorizontal: 5,
+      },
+      textInput:{
+        fontSize: 18,
+        color: '#ccc',
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: '#333',
         padding: 10,
+        marginTop: 10,
+        marginBottom: 20,
+      },
+      saveEditButtonContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+      },
+      saveButton: {
+        borderWidth: 2,
+        backgroundColor: '#FFA726',
+        padding: 8,
+        borderRadius: 10,
+      },
+      editButton: {
+        borderWidth: 2,
+        backgroundColor: '#FF7043',
+        padding: 8,
+        borderRadius: 10,
+      },
+      buttonTitle: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 24,
+        textAlign: 'center',
+      },
+      dateTitle: {
+        color: '#FFA726',
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: 10,
+        marginBottom: 5,
       },
       savedWorkoutContainer: {
         borderWidth: 1,
-        marginHorizontal: 10,
+        borderColor: '#ccc',
+        backgroundColor: '#1E1E1E',
+        padding: 10,
+        marginBottom: 10,
+        borderRadius: 5,
       },
       selectedWorkoutContainer: {
-        backgroundColor: 'grey'
-      }
+        backgroundColor: 'grey', 
+      },
+      workoutText: {
+        fontSize: 16,
+        marginBottom: 5,
+        color: '#ccc',
+      },
+      deleteButton: {
+        backgroundColor: '#FC4E19', 
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 3,
+        marginTop: 5,
+      },
+      deleteButtonText: {
+        color: '#fff',
+        textAlign: 'center',
+      },
+      tooltip: {
+        backgroundColor: '#555',
+        padding: 10,
+        borderRadius: 5,
+        position: 'absolute',
+        bottom: 20,
+        left: 0,
+        right: 0,
+        alignItems: 'center',
+        zIndex: 999,
+      },
+      tooltipText: {
+        color: '#fff',
+        fontSize: 20,
+      },
     });
