@@ -4,8 +4,6 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import exerciseData from '../exerciseData';
 
-
-// TODO: Add exercises to existing routines
 export default function RoutineScreen() {
   const navigation = useNavigation();
   const [savedRoutines, setSavedRoutines] = useState([]);
@@ -22,6 +20,10 @@ export default function RoutineScreen() {
 
   const createRoutine = () => {
     navigation.navigate('CreateRoutine');
+  };
+
+  const updateRoutine = (routine) => {
+    navigation.navigate('CreateRoutine', {routineToUpdate: routine});
   };
 
   const isCardioExercise = (exerciseName) => {
@@ -56,42 +58,17 @@ export default function RoutineScreen() {
     }
   };
 
-  const removeExercise = async (routineName, exerciseToBeRemoved) => {
+  const deleteRoutine = async (routineName) => {
     try {
-      const updatedRoutines = savedRoutines.map((routine) => {
-        if (routine.name === routineName) {
-          return {
-            ...routine,
-            exercises: routine.exercises.filter((exercise) => exercise !== exerciseToBeRemoved),
-          };
-        }
-        return routine;
-      });
+      const updatedRoutines = savedRoutines.filter((routine) => routine.name !== routineName);
+      
       setSavedRoutines(updatedRoutines);
+      
       await AsyncStorage.setItem('workoutRoutine', JSON.stringify(updatedRoutines));
-    } catch (error) {
-      console.error('Error removing exercise: ', error);
-    }
-  };
-  
-  const handleRemove = (routineName, exercise) => {
-    if(routineName && exercise) {
-      removeExercise(routineName, exercise);
-    }
-  };
-
-  const deleteRoutine = async(routineName, index) => {
-    try {
-      const updatedRoutines = [...savedRoutines];
-      updatedRoutines.splice(index, 1);
-
-      setSavedRoutines(updatedRoutines);
-
-      await AsyncStorage.setItem('workoutRoutine', JSON.stringify(fetchRoutines(updatedRoutines)));
     } catch (error) {
       console.error('Error deleting routine: ', error);
     }
-  }
+  };
 
   return (
     <ScrollView>
@@ -103,15 +80,15 @@ export default function RoutineScreen() {
           <View key={index} style={{ marginBottom: 10 }}>
             <Text>{routine.name}</Text>
             <TouchableOpacity onPress={() => deleteRoutine(routine.name, index)}>
-              <Text>Delete routine</Text>
+              <Text>Delete Routine</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => updateRoutine((routine))}>
+              <Text>Edit Routine</Text>
             </TouchableOpacity>
             {routine.exercises.map((exercise, exerciseIndex) => (
               <View key={exerciseIndex}>
                 <TouchableOpacity onPress={() => handleExercisePress(exercise)}>
                   <Text>{exercise}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleRemove(routine.name, exercise)}>
-                  <Text>Remove</Text>
                 </TouchableOpacity>
               </View>
             ))}

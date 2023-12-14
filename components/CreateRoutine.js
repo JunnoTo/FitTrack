@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, TextInput, Alert, Touchable } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, TextInput, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import exerciseData from '../exerciseData';
+import { useRoute, useNavigation } from '@react-navigation/native'
 
-export default function CreateRoutineScreen() {
+export default function CreateRoutineScreen({ route }) {
+    const routes = useRoute();
+    const navigation = useNavigation();
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedExercises, setSelectedExercises] = useState([]);
     const [routineName, setRoutineName] = useState('');
@@ -11,7 +14,17 @@ export default function CreateRoutineScreen() {
     
     useEffect(() => {
       fetchCustomExercises();
+
+      if(route.params && route.params.routineToUpdate) {
+        const { name, exercises } = route.params.routineToUpdate;
+        setRoutineName(name);
+        setSelectedExercises(exercises);
+      }
     }, []);
+
+    const showRoutines = () => {
+      navigation.navigate("Routines");
+    }
 
     const fetchCustomExercises = async () => {
       try {
@@ -37,59 +50,60 @@ export default function CreateRoutineScreen() {
         setSelectedExercises([...selectedExercises, exercise]);
       }
     };
+
+    const renderExercises = () => {
+      const exercises = exerciseData[selectedCategory.toLowerCase()];
+
+      return (
+          <ScrollView>
+              {exercises.map((item, index) => (
+                  <TouchableOpacity
+                      key={index}
+                      onPress={() => handleExerciseSelection(item.name)}
+                  >
+                      <Text style={{ textDecorationLine: selectedExercises.includes(item.name) ? 'line-through' : 'none' }}>
+                          {item.name}
+                      </Text>
+                  </TouchableOpacity>
+              ))}
+          </ScrollView>
+      );
+  };
   
-    const saveRoutine = async () => {
+    const handleSaveRoutine = async () => {
       try {
         const storedRoutines = await AsyncStorage.getItem('workoutRoutine');
         let existingRoutines = storedRoutines ? JSON.parse(storedRoutines) : [];
-    
+  
         if (!Array.isArray(existingRoutines)) {
           console.error('Data retrieved from AsyncStorage is not an array:', existingRoutines);
           existingRoutines = [];
         }
-    
+  
         const newRoutine = { name: routineName, exercises: selectedExercises };
-        const updatedRoutines = [...existingRoutines, newRoutine];
-    
-        await AsyncStorage.setItem('workoutRoutine', JSON.stringify(updatedRoutines));
+  
+        if (route.params && route.params.routineToUpdate) {
+          existingRoutines = existingRoutines.map((routine) => {
+            if (routine.name === route.params.routineToUpdate.name) {
+              return newRoutine;
+            }
+            return routine;
+          });
+        } else {
+          existingRoutines.push(newRoutine);
+        }
+  
+        await AsyncStorage.setItem('workoutRoutine', JSON.stringify(existingRoutines));
+        Alert.alert(
+          'Routine Saved',
+          'Your routine has been saved successfully.',
+          [
+            { text: 'OK', onPress: () => showRoutines() }
+          ]
+        );
       } catch (error) {
         console.error('Error saving routine:', error);
       }
-    };
-
-    const renderExercises = () => {
-      if (!selectedCategory) {
-        return <Text>Select a category</Text>;
-      }
-  
-    const exercises = exerciseData[selectedCategory.toLowerCase()];
-
-    
-      return (
-        <View>
-          <FlatList
-            data={exercises}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handleExerciseSelection(item.name)}>
-                <Text style={{ textDecorationLine: selectedExercises.includes(item.name) ? 'line-through' : 'none' }}>
-                  {item.name}
-                </Text>
-              </TouchableOpacity>
-            )}
-            keyExtractor={(item) => item.id.toString()}
-          />
-        </View>
-      );
-    };
-  
-    const handleSaveRoutine = () => {
-      if (!routineName) {
-        Alert.alert('Routine Name Required', 'Please enter a name for your routine.');
-        return;
-      }
-  
-      saveRoutine();
-      Alert.alert('Routine Saved', 'Your routine has been saved successfully.');
     };
 
     const renderCustomExercises = () => {
