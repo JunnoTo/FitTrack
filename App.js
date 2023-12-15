@@ -29,7 +29,7 @@ export default function App() {
     },
     headerTintColor: '#D37506',
     headerTitleStyle:{
-      fontSize: 30,
+      fontSize: 26,
     },
     headerTitleAlign: 'center',
   };
@@ -97,16 +97,19 @@ export default function App() {
           name="WeightExercise"
           component={WeightExercise}
           options={({ route, navigation }) => ({ title:`${route.params.exercise} `,
+          headerTitleAlign: 'left',
           headerLeft: () => (
               <TouchableOpacity
                 onPress={() => { navigation.navigate('Home');
             }}
             >
+            <View style={{ marginLeft: 20 }}>
               <Icon
                 name="home"
                 size={30}
                 color="#D37506"
               />
+            </View>
             </TouchableOpacity>
             ),
             headerRight: () => null,
@@ -117,16 +120,19 @@ export default function App() {
           name="TimeDistanceExercise"
           component={TimeDistanceExercise}
           options={({ route, navigation }) => ({ title:`${route.params.exercise} `,
+          headerTitleAlign: 'left',
           headerLeft: () => (
             <TouchableOpacity
             onPress={() => { navigation.navigate('Home');
         }}
         >
-          <Icon
-            name="home"
-            size={30}
-            color="#D37506"
-          />
+          <View style={{ marginLeft: 10 }}>
+            <Icon
+              name="home"
+              size={30}
+              color="#D37506"
+            />
+          </View>
         </TouchableOpacity>
             ),
             headerRight: () => null,
@@ -136,21 +142,25 @@ export default function App() {
         <Stack.Screen
           name="CalorieCalculator"
           component={CalorieCalculator}
+          options={{headerTitle: 'Calorie Calculator'}}
         />
 
         <Stack.Screen
           name ="CustomExercise"
           component={CustomExercise}
+          options={{headerTitle: 'Create Exercise'}}
         />
 
         <Stack.Screen
           name="Body-weight"
           component={BodyWeightTrack}
+          options={{headerTitle: 'Weight Log'}}
         />
 
         <Stack.Screen
           name="CreateRoutine"
           component={CreateRoutine}
+          options={{headerTitle: 'Create Routine'}}
         />
 
         <Stack.Screen

@@ -10,14 +10,9 @@ export default function CustomExercise({}) {
     const [ showDropdown, setShowDropdown ] = useState(false);
     const categories = ['Abs', 'Back', 'Biceps', 'Cardio', 'Chest', 'Legs', 'Shoulders', 'Triceps'];
     
-
-    const toggleDropdown = () => {
-        setShowDropdown(!showDropdown);
-    };
-
     const handleSelectCategory = (item) => {
         setCategory(item);
-        toggleDropdown();
+        setShowDropdown(false);
     }
 
     const saveCustomExercise = async ( name, category) => {
@@ -61,61 +56,112 @@ export default function CustomExercise({}) {
     };
 
   return (
-    <View>
-        <Text>New Exercise</Text>
-
+    <View style={styles.container}>
         <TextInput
+            style={styles.textInput}
             placeholder='Name'
+            placeholderTextColor={'#ccc'}
             value={String(name)}
             onChangeText={(text) => setName(text) }
         />
-
-        <TouchableOpacity style={styles.dropdownButton} onPress={toggleDropdown}>
-            <Text>{category || 'Select a category'}</Text>
-        </TouchableOpacity>
-        <Modal
-            visible={showDropdown}
-            transparent={true}
-            animationType='fade'
-            onRequestClose={toggleDropdown}
-        >
+        <View style={styles.dropdownParent}>
+            <TouchableOpacity
+            style={styles.dropdownButton}
+            onPress={() => setShowDropdown(!showDropdown)}
+            >
+            <Text style={styles.buttonText}>{category || 'Select a category'}</Text>
+            </TouchableOpacity>
+            {showDropdown && (
             <View style={styles.dropdownContainer}>
                 {categories.map((item, index) => (
-                    <TouchableOpacity
-                        key={index}
-                        style={styles.dropdownItem}
-                        onPress={() => handleSelectCategory(item)}
-                    >
-                        <Text>{item}</Text>
-                    </TouchableOpacity>
+                <TouchableOpacity
+                    key={index}
+                    style={styles.dropdownItem}
+                    onPress={() => handleSelectCategory(item)}
+                >
+                    <Text style={styles.dropdownText}>{item}</Text>
+                </TouchableOpacity>
                 ))}
             </View>
-        </Modal>
+            )}
+      </View>
 
         <TouchableOpacity
+            style={styles.saveButton}
             onPress={handleSaveExercise}>
-                <Text>Save Exercise</Text>
+                <Text style={styles.buttonTitle}>Save</Text>
         </TouchableOpacity>
     </View>
   )
-}
+    }
 
-const styles = StyleSheet.create({
-    dropdownButton: {
-      padding: 10,
-      borderWidth: 1,
-      borderColor: 'black',
-      borderRadius: 5,
-    },
-    dropdownContainer: {
-      backgroundColor: 'white',
-      marginTop: 30,
-      padding: 10,
-      borderRadius: 5,
-      borderWidth: 1,
-      borderColor: 'black',
-    },
-    dropdownItem: {
-      padding: 10,
-    },
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: '#121212',
+        },
+        dropdownButton: {
+            marginTop: 20,
+            padding: 8,
+            borderWidth: 1,
+            borderColor: '#ccc',
+            borderRadius: 5,
+            width: '50%',
+            alignItems: 'center',
+        },
+        dropdownContainer: {
+            position: 'absolute',
+            top: 60,
+            left: '25%',
+            backgroundColor: '#2e2e2e',
+            padding: 10,
+            borderRadius: 5,
+            borderWidth: 1,
+            borderColor: 'black',
+            width: '50%',
+            zIndex: 999,
+        },
+        dropdownItem: {
+            padding: 6,
+            borderBottomWidth: 1,
+        },
+        textInput: {
+            borderWidth: 1,
+            borderRadius: 5,
+            borderColor: '#fff',
+            color: '#fff',
+            fontSize: 22,
+            margin: 10,
+            marginTop: 90,
+            padding: 5,
+            marginHorizontal: 20,
+        },
+        dropdownParent: {
+            position: 'relative',
+            alignItems: 'center',
+            flexDirection: 'column',
+        },
+        dropdownText:{
+            color: '#fff',
+            fontSize: 18,
+        },
+        buttonText: {
+            color: '#fff',
+            fontSize: 18,
+        },
+        saveButton: {
+            display: 'flex',
+            borderWidth: 2,
+            backgroundColor: '#FFA726',
+            padding: 8,
+            borderRadius: 10,
+            marginHorizontal: 95,
+            marginTop: 80,
+        },
+        buttonTitle: {
+            color: '#fff',
+            fontWeight: 'bold',
+            fontSize: 24,
+            textAlign: 'center',
+          },
   });

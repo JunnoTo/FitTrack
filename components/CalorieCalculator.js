@@ -11,15 +11,15 @@ export default function CalorieCalculator() {
     const [step, setStep] = useState(1)
     const [calories, setCalories] = useState(0)
 
-    let menBMRConstant = 66.473;
-    let menWeightConstant = 13.7516;
-    let menHeightConstant = 5.0033;
-    let menAgeConstant = 6.755;
+    const menBMRConstant = 66.473;
+    const menWeightConstant = 13.7516;
+    const menHeightConstant = 5.0033;
+    const menAgeConstant = 6.755;
 
-    let womenBMRConstant = 655.0955;
-    let womenWeightConstant = 9.5634;
-    let womenHeightConstant = 1.8496;
-    let womenAgeConstant = 4.6756;
+    const womenBMRConstant = 655.0955;
+    const womenWeightConstant = 9.5634;
+    const womenHeightConstant = 1.8496;
+    const womenAgeConstant = 4.6756;
 
     const activityLevel = [
         { name: 'Sedentary', constant: 1.2},
@@ -33,38 +33,32 @@ export default function CalorieCalculator() {
     const handleNextStep = () => {
         if (step === 1 && gender !== '') {
             setStep(step + 1);
-            console.log(gender);
         } else if (step === 2 && weight !== '') {
             setStep(step + 1);
-            console.log(weight);
         } else if (step === 3 && height !== '') {
             setStep(step + 1);
-            console.log(height);
         } else if (step === 4 && age !== '') {
             setStep(step + 1);
-            console.log(age);
         } else if (step === 5 && activity !== 0) {
             calculateCalories();
             setStep(step + 1);
         };
     }
+
     const handleActivitySelection = (constant) => {
         setActivity(constant);
-        console.log(constant);
     }; 
 
     const calculateCalories = () => {
-        console.log('We have now reached the calorie calculator');
         const numericWeight = parseFloat(weight);
         const numericHeight = parseFloat(height);
         const numericAge = parseFloat(age);
-        let bmr = 0;
+        const bmr = 0;
         if (gender ==='male') {
             bmr = menBMRConstant + (numericWeight * menWeightConstant) + (numericHeight * menHeightConstant) - (numericAge * menAgeConstant);
         } else if (gender === 'female') {
             bmr = womenBMRConstant + (numericWeight * womenWeightConstant) + (numericHeight * womenHeightConstant) - (numericAge * womenAgeConstant);
         };
-        console.log(numericWeight, numericHeight, numericAge, activity);
         const tdee = bmr * activity;
         setCalories(tdee);
         };

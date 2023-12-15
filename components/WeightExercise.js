@@ -2,7 +2,7 @@ import { View, TextInput, TouchableOpacity, Text, StyleSheet, ToastAndroid, Toas
 import React, { useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
-
+import Icon from "react-native-vector-icons/Ionicons";
 
 
 export default function WeightExercise({ route }) {
@@ -217,8 +217,8 @@ export default function WeightExercise({ route }) {
                   { text: 'Confirm', onPress: () => deleteWorkout(date, index) },
                 ],
                 { cancelable: false }
-              )} style={styles.deleteButton}>
-                <Text style={styles.deleteButtonText}>Delete Workout</Text>
+              )}>
+                <Icon name="trash" style={styles.deleteButton}/>
               </TouchableOpacity>
             </View>
           ))}
@@ -374,6 +374,9 @@ export default function WeightExercise({ route }) {
       },
       savedWorkoutContainer: {
         borderWidth: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         borderColor: '#ccc',
         backgroundColor: '#1E1E1E',
         padding: 10,
@@ -389,15 +392,9 @@ export default function WeightExercise({ route }) {
         color: '#ccc',
       },
       deleteButton: {
-        backgroundColor: '#FC4E19', 
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        borderRadius: 3,
-        marginTop: 5,
-      },
-      deleteButtonText: {
-        color: '#fff',
-        textAlign: 'center',
+        color: '#FC4E19', 
+        fontSize: 36,
+        marginRight: 10,
       },
       tooltip: {
         backgroundColor: '#555',
