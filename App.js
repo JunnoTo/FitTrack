@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ExerciseGroups from './components/ExerciseGroups';
 import ExerciseList from './components/ExerciseList';
@@ -142,8 +142,19 @@ export default function App() {
         <Stack.Screen
           name="CalorieCalculator"
           component={CalorieCalculator}
-          options={{headerTitle: 'Calorie Calculator'}}
-        />
+          options={({ navigation }) => ({
+            headerTitle: 'Calorie Calculator',
+            headerTitleAlign: 'left',
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                <View style={{ marginLeft: 10 }}>
+                  <Icon name="home" size={30} color="#D37506" />
+                </View>
+              </TouchableOpacity>
+            ),
+            headerRight: () => null,
+          })}
+      />
 
         <Stack.Screen
           name ="CustomExercise"
