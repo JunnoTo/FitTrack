@@ -106,16 +106,6 @@ export default function WeightExercise({ route }) {
       };
       fetchWorkouts();
     }, [exercise]);
-    
-    const deleteWorkout = async (date, index) => {
-      try {
-        const updatedWorkouts = thisWorkout.filter((workout, i) => !(i === index));
-        await AsyncStorage.setItem('workouts', JSON.stringify(updatedWorkouts));
-        setThisWorkout(updatedWorkouts);
-      } catch (error) {
-        console.error('Error deleting workout:', error);
-      }
-    };
 
     const handleWorkoutPress = (index) => {
       
@@ -208,17 +198,6 @@ export default function WeightExercise({ route }) {
                 <Text style={styles.workoutText}>Weight: {workout.weight} kg</Text>
                 <Text style={styles.workoutText}>Reps: {workout.reps}</Text>
                 <Text style={styles.workoutText}>Notes: {workout.notes}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => Alert.alert(
-                'Delete Workout',
-                'Are you sure you want to delete this workout?',
-                [
-                  { text: 'Back' },
-                  { text: 'Confirm', onPress: () => deleteWorkout(date, index) },
-                ],
-                { cancelable: false }
-              )}>
-                <Icon name="trash" style={styles.deleteButton}/>
               </TouchableOpacity>
             </View>
           ))}

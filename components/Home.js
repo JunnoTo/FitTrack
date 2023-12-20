@@ -11,19 +11,33 @@ export default function Home() {
   
     const addExercise = () => {
         navigation.navigate("ExerciseGroups")
-    }
+    };
 
     const calorieCalculator = () => {
       navigation.navigate("CalorieCalculator")
-    }
+    };
 
     const bodyWeightTrack = () => {
       navigation.navigate("Body-weight")
-    }
+    };
 
     const routine = () => {
       navigation.navigate("Routines")
-    }
+    };
+
+    const editWorkout = (date, index, workoutType) => {
+      const workoutToEdit = workoutsByDate[date][index];
+      
+      if (workoutType === 'weightRep') {
+        navigation.navigate('WeightExercise', {
+          exercise: workoutToEdit.name,
+        });
+      } else if (workoutType === 'timeDistance') {
+        navigation.navigate('TimeDistanceExercise', {
+          exercise: workoutToEdit.name,
+        });
+      }
+    };
 
     const toggleShowNotes = (date, index) => {
       setShowNotes(prevShowNotes => {
@@ -132,6 +146,12 @@ export default function Home() {
                     </View>
                     }
                   </View>
+                  <TouchableOpacity
+                    onPress={() => editWorkout(date, index, workout.type)}
+                    style={styles.editButton}
+                  >
+                    <Icon name="pencil" style={styles.editIcon} />
+                  </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() =>
                       Alert.alert(
@@ -264,5 +284,9 @@ footerSlot:{
 },
 footerText: {
   color:'#ccc',
+},
+editIcon:{
+  color: '#00ccff',
+  fontSize: 25,
 },
 });

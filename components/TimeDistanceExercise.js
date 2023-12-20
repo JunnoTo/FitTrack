@@ -107,16 +107,6 @@ export default function TimeDistanceExercise({ route }) {
       fetchWorkouts();
     }, []);
     
-    const deleteWorkout = async (date, index) => {
-      try {
-        const updatedWorkouts = thisWorkout.filter((workout, i) => !(i === index));
-        await AsyncStorage.setItem('workouts', JSON.stringify(updatedWorkouts));
-        setThisWorkout(updatedWorkouts);
-      } catch (error) {
-        console.error('Error deleting workout:', error);
-      }
-    };
-    
     const handleWorkoutPress = (index) => {
       
       const newSelectedWorkout = selectedWorkout === index ? -1 : index;
@@ -205,20 +195,9 @@ export default function TimeDistanceExercise({ route }) {
           {workouts.map((workout, index) => (
             <View style={[styles.savedWorkoutContainer, selectedWorkout === index && styles.selectedWorkoutContainer]} key={index}>
               <TouchableOpacity onPress={() => handleWorkoutPress(index)}>
-                <Text style={styles.workoutText}>Time: {workout.time} kg</Text>
-                <Text style={styles.workoutText}>Distance: {workout.distance}</Text>
+                <Text style={styles.workoutText}>Time: {workout.time} min</Text>
+                <Text style={styles.workoutText}>Distance: {workout.distance} km</Text>
                 <Text style={styles.workoutText}>Notes: {workout.notes}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => Alert.alert(
-                'Delete Workout',
-                'Are you sure you want to delete this workout?',
-                [
-                  { text: 'Back' },
-                  { text: 'Confirm', onPress: () => deleteWorkout(date, index) },
-                ],
-                { cancelable: false }
-              )}>
-                <Icon name="trash" style={styles.deleteButton}/>
               </TouchableOpacity>
             </View>
           ))}
