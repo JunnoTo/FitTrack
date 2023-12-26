@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import styles from '../styles/exerciseList.js'
 import { useNavigation } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import exerciseData from '../exerciseData';
@@ -64,23 +65,3 @@ export default function ExerciseList({ route }) {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container:{
-    flex: 1,
-    backgroundColor: '#121212'
-  },
-  titleContainer:{
-    flexDirection:'row',
-    borderWidth: 1,
-    borderColor: '#333',
-    alignItems:'center',
-    justifyContent:'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  title:{
-    fontSize: 25,
-    color: '#ccc',
-  },
-});

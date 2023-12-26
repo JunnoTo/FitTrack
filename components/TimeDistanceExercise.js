@@ -1,8 +1,8 @@
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, ToastAndroid, ToastiOS, Platform, Alert, ScrollView } from 'react-native'
+import { View, TextInput, TouchableOpacity, Text, ToastAndroid, ToastiOS, Platform, Alert, ScrollView } from 'react-native'
+import styles from '../styles/exerciseInput.js'
 import React, { useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
-import Icon from "react-native-vector-icons/Ionicons";
 
 export default function TimeDistanceExercise({ route }) {
 
@@ -277,117 +277,3 @@ export default function TimeDistanceExercise({ route }) {
         </View>
       );
     };
-
-    const styles = StyleSheet.create({
-      container: {
-        flex: 1,
-        backgroundColor: '#121212',
-        padding: 20,
-      },
-      numberInputContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-      },
-      inputRow: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 10,
-      },
-      numberInputTitle: {
-        color: '#ccc',
-        fontSize: 32,
-        marginRight: 10,
-      },
-      buttonContainer: {
-        flexDirection: 'row',
-        marginTop: 5,
-      },
-      numberInputField: {
-        fontSize: 30,
-        color: '#ccc',
-        width: 100,
-        borderWidth: 1,
-        borderRadius: 10,
-        borderColor: '#333',
-        textAlign: 'center',
-        marginHorizontal: 5,
-      },
-      textInput:{
-        fontSize: 18,
-        color: '#ccc',
-        borderWidth: 1,
-        borderRadius: 10,
-        borderColor: '#333',
-        padding: 10,
-        marginTop: 10,
-        marginBottom: 20,
-      },
-      saveEditButtonContainer:{
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-      },
-      saveButton: {
-        borderWidth: 2,
-        backgroundColor: '#FFA726',
-        padding: 8,
-        borderRadius: 10,
-      },
-      editButton: {
-        borderWidth: 2,
-        backgroundColor: '#FF7043',
-        padding: 8,
-        borderRadius: 10,
-      },
-      buttonTitle: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 24,
-        textAlign: 'center',
-      },
-      dateTitle: {
-        color: '#FFA726',
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginTop: 10,
-        marginBottom: 5,
-      },
-      savedWorkoutContainer: {
-        borderWidth: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderColor: '#ccc',
-        backgroundColor: '#1E1E1E',
-        padding: 10,
-        marginBottom: 10,
-        borderRadius: 5,
-      },
-      selectedWorkoutContainer: {
-        backgroundColor: 'grey', 
-      },
-      workoutText: {
-        fontSize: 16,
-        marginBottom: 5,
-        color: '#ccc',
-      },
-      deleteButton: {
-        color: '#FC4E19', 
-        fontSize: 36,
-        marginRight: 10,
-      },
-      tooltip: {
-        backgroundColor: '#555',
-        padding: 10,
-        borderRadius: 5,
-        position: 'absolute',
-        bottom: 20,
-        left: 0,
-        right: 0,
-        alignItems: 'center',
-        zIndex: 999,
-      },
-      tooltipText: {
-        color: '#fff',
-        fontSize: 20,
-      },
-    });
