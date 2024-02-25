@@ -98,12 +98,14 @@ export default StyleSheet.create({
       marginRight: 10,
     },
     tooltip: {
+      width: '90%',
       backgroundColor: '#555',
+      alignSelf: 'center',
       padding: 10,
       borderRadius: 5,
       position: 'absolute',
       bottom: 20,
-      left: 0,
+      left: 40,
       right: 0,
       alignItems: 'center',
       zIndex: 999,
@@ -112,4 +114,10 @@ export default StyleSheet.create({
       color: '#fff',
       fontSize: 20,
     },
+    chartButton:{
+      borderWidth: 2,
+      backgroundColor: '#FF7043',
+      padding: 8,
+      borderRadius: 10,
+    }
   });

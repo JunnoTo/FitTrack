@@ -2,14 +2,15 @@ import { View, TextInput, TouchableOpacity, Text, ToastAndroid, ToastiOS, Platfo
 import styles from '../styles/exerciseInput.js'
 import React, { useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 export default function WeightExercise({ route }) {
   
     const routes = useRoute();
+    const navigation = useNavigation();
     const { exercise } = route.params;
     const [ weight, setWeight ] = useState(0);
-    const [ reps, setReps ] = useState(0);
+    const [ reps, setReps ] = useState(1);
     const [ notes, setNotes ] = useState('');
     const [ thisWorkout, setThisWorkout ] = useState([]);
     const [ selectedWorkout, setSelectedWorkout ] = useState(null);
@@ -27,7 +28,7 @@ export default function WeightExercise({ route }) {
     }
 
     const decreaseWeight = () => {
-        if (weight > 0   ){
+        if (weight > 0){
         setWeight(weight - 2.5);
         }
     }
@@ -37,9 +38,13 @@ export default function WeightExercise({ route }) {
     }
     
     const decreaseReps= () => {
-        if (reps > 0   ){
+        if (reps > 1){
         setReps(reps - 1);
         }
+    }
+
+    const goToChart = () => {
+      navigation.navigate('ChartScreen', { exercise: route.params.exercise});
     }
 
     const saveWorkout = async ( type, name, weight, reps, notes ) => {
@@ -192,13 +197,16 @@ export default function WeightExercise({ route }) {
         <View key={date}>
           <Text style={styles.dateTitle}>{date}</Text>
           {workouts.map((workout, index) => (
-            <View style={[styles.savedWorkoutContainer, selectedWorkout === index && styles.selectedWorkoutContainer]} key={index}>
-              <TouchableOpacity onPress={() => handleWorkoutPress(index)}>
+            <TouchableOpacity 
+              style={[styles.savedWorkoutContainer, selectedWorkout === index && styles.selectedWorkoutContainer]} 
+              key={index} 
+              onPress={() => handleWorkoutPress(index)}>
+              <View>
                 <Text style={styles.workoutText}>Weight: {workout.weight} kg</Text>
                 <Text style={styles.workoutText}>Reps: {workout.reps}</Text>
                 <Text style={styles.workoutText}>Notes: {workout.notes}</Text>
-              </TouchableOpacity>
-            </View>
+              </View>
+            </TouchableOpacity>
           ))}
         </View>
       ));
@@ -267,6 +275,10 @@ export default function WeightExercise({ route }) {
 
             <TouchableOpacity style={styles.editButton}onPress={updateWorkout}>
               <Text style={styles.buttonTitle}>Update</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.chartButton}onPress={goToChart}>
+              <Text style={styles.buttonTitle}>Chart</Text>
             </TouchableOpacity>
           </View>
 

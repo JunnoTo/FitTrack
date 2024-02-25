@@ -9,6 +9,7 @@ export default StyleSheet.create({
       fontSize: 20,
       color: 'white',
       fontWeight: 'bold',
+      textAlign: 'center',
     },
     arrowIcon: {
       fontSize: 30,

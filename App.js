@@ -14,6 +14,7 @@ import RandomQuote from './components/RandomQuote';
 import BodyWeightTrack from './components/BodyWeightTrack';
 import CreateRoutine from './components/CreateRoutine';
 import ShowRoutines from './components/ShowRoutines';
+import ChartScreen from './components/ChartScreen';
 
 export default function App() {
   const [quoteAnimationComplete, setQuoteAnimationComplete] = useState(false);
@@ -178,7 +179,12 @@ export default function App() {
           name="Routines"
           component={ShowRoutines}
         />
-        
+
+        <Stack.Screen
+          name="ChartScreen"
+          component={ChartScreen}
+          options={({ route }) => ({ title: route.params.exercise + ' Chart'})}
+        />
       </Stack.Navigator>
     </NavigationContainer>
      )}       
