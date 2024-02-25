@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TouchableOpacity, Alert } from 'react-native';
 import styles from '../styles/home.js'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation, useFocusEffect } from '@react-navigation/core'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import Icon from "react-native-vector-icons/Ionicons";
 
 export default function Home() {

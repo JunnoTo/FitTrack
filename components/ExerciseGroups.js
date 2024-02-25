@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import styles from '../styles/exerciseGroups.js'
 import React from 'react'
-import { useNavigation } from '@react-navigation/core'
+import { useNavigation } from '@react-navigation/native'
 import Icon from "react-native-vector-icons/Ionicons";
 
 
