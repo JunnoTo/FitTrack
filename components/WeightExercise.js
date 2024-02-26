@@ -263,7 +263,8 @@ export default function WeightExercise({ route }) {
 
           <TextInput 
             onChangeText={(setNotes)}
-            placeholder="Notes:"
+            placeholder="Notes"
+            placeholderTextColor={'#d9d9d9'}
             multiline={true}
             style={styles.textInput}
             value={ notes }

@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#121212'
+        backgroundColor: '#292929'
     },
     step1:{
         flex: 1,
@@ -37,6 +37,7 @@ export default StyleSheet.create({
     },
     buttonText:{
         fontSize: 30,
+        color: '#fff'
     },
     icon:{
         fontSize: 50,
@@ -89,7 +90,7 @@ export default StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         fontSize: 40,
-        color: 'white',
+        color: '#fff',
     },
     detailText:{
         fontSize: 40,

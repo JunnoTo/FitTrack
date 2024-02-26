@@ -14,7 +14,7 @@ const exerciseData = {
             {id: 2, name: 'Barbell Shrug'},
             {id: 3, name: 'Chin up'},
             {id: 4, name: 'Deadlift'},
-            {id: 5, name: 'Dumbell Row'},
+            {id: 5, name: 'Dumbbell Row'},
             {id: 6, name: 'Good Morning'},
             {id: 7, name: 'Hammer Strength Row'},
             {id: 8, name: 'Lat Pulldown'},
@@ -84,11 +84,9 @@ const exerciseData = {
             {id: 2, name: 'Close Grip Barbell Bench Press'},
             {id: 3, name: 'Dumbbell Overhead Triceps Extension'},
             {id: 4, name: 'Lying Triceps Extension'},
-            {id: 5, name: 'Parallel Bar Triceps Dip'},
-            {id: 6, name: 'Ring Dip'},
-            {id: 7, name: 'Rope Push Down'},
-            {id: 8, name: 'Close Grip Bench Press'},
-            {id: 9, name: 'V-Bar Push Down'},
+            {id: 5, name: 'Machine Dip'},
+            {id: 6, name: 'Dip'},
+            {id: 7, name: 'Push Down'},
             {id: 10, name: 'Skull Crusher'}
         ],
 };

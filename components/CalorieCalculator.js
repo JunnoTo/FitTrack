@@ -94,7 +94,8 @@ export default function CalorieCalculator() {
             <View style={styles.step2}>
                 <View style={styles.inputContainer}>
                     <TextInput
-                    placeholder="Age:"
+                    placeholder="Age"
+                    placeholderTextColor={'#d9d9d9'}
                     style={styles.inputField}
                     value={age}
                     keyboardType='numeric'
@@ -103,7 +104,8 @@ export default function CalorieCalculator() {
                 </View>
                 <View style={styles.inputContainer}>
                     <TextInput
-                        placeholder="Weight:"
+                        placeholder="Weight"
+                        placeholderTextColor={'#d9d9d9'}
                         style={styles.inputField}
                         value={weight}
                         keyboardType='numeric'
@@ -113,7 +115,8 @@ export default function CalorieCalculator() {
                 </View>
                 <View style={styles.inputContainer}>
                     <TextInput
-                        placeholder="Height:"
+                        placeholder="Height"
+                        placeholderTextColor={'#d9d9d9'}
                         style={styles.inputField}
                         value={height}
                         keyboardType='numeric'

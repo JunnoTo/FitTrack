@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#121212',
+      backgroundColor: '#292929',
       padding: 20,
     },
     numberInputContainer: {
@@ -16,7 +16,7 @@ export default StyleSheet.create({
       marginBottom: 10,
     },
     numberInputTitle: {
-      color: '#ccc',
+      color: '#fff',
       fontSize: 32,
       marginRight: 10,
     },
@@ -26,7 +26,7 @@ export default StyleSheet.create({
     },
     numberInputField: {
       fontSize: 30,
-      color: '#ccc',
+      color: '#fff',
       width: 100,
       borderWidth: 1,
       borderRadius: 10,
@@ -36,7 +36,7 @@ export default StyleSheet.create({
     },
     textInput:{
       fontSize: 18,
-      color: '#ccc',
+      color: '#fff',
       borderWidth: 1,
       borderRadius: 10,
       borderColor: '#333',
@@ -51,13 +51,13 @@ export default StyleSheet.create({
     saveButton: {
       borderWidth: 2,
       backgroundColor: '#FFA726',
-      padding: 8,
+      padding: 6,
       borderRadius: 10,
     },
     editButton: {
       borderWidth: 2,
       backgroundColor: '#FF7043',
-      padding: 8,
+      padding: 6,
       borderRadius: 10,
     },
     buttonTitle: {
@@ -116,8 +116,8 @@ export default StyleSheet.create({
     },
     chartButton:{
       borderWidth: 2,
-      backgroundColor: '#FF7043',
-      padding: 8,
+      backgroundColor: '#fc916f',
+      padding: 6,
       borderRadius: 10,
     }
   });

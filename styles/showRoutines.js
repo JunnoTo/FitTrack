@@ -3,13 +3,14 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#121212',
+      backgroundColor: '#292929',
     },
     title: {
       fontSize: 20,
       color: 'white',
       fontWeight: 'bold',
       textAlign: 'center',
+      marginTop: 50,
     },
     arrowIcon: {
       fontSize: 30,

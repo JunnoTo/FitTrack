@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#121212',
+      backgroundColor: '#292929',
     },
     scrollView:{
       padding: 20,
@@ -70,5 +70,17 @@ export default StyleSheet.create({
       fontSize: 16,
       fontWeight: 'bold',
       textAlign: 'center',
+    },
+    customText: {
+      color: '#fff',
+      fontSize: 16,
+    },
+    selectedContainer: {
+      borderWidth: 1,
+    },
+    selectedText:{
+      fontSize: 20,
+      color: '#D37506',
+      fontWeight: 'bold',
     },
   });

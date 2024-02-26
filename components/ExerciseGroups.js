@@ -14,6 +14,11 @@ export default function Exercises() {
   }
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.titleContainer} onPress={() => handleExercisePress('Custom')}>
+        <Text style={styles.title}>Your Exercises</Text>
+        <Icon name="chevron-forward" style={styles.icon}/>
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.titleContainer} onPress={() => handleExercisePress('Abs')}>
         <Text style={styles.title}>Abs</Text>
         <Icon name="chevron-forward" style={styles.icon}/>
@@ -51,11 +56,6 @@ export default function Exercises() {
 
       <TouchableOpacity style={styles.titleContainer} onPress={() => handleExercisePress('Triceps')}>
         <Text style={styles.title}>Triceps</Text>
-        <Icon name="chevron-forward" style={styles.icon}/>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.titleContainer} onPress={() => handleExercisePress('Custom')}>
-        <Text style={styles.title}>Your Exercises</Text>
         <Icon name="chevron-forward" style={styles.icon}/>
       </TouchableOpacity>
       

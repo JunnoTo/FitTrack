@@ -61,7 +61,7 @@ export default function CustomExercise({}) {
         <TextInput
             style={styles.textInput}
             placeholder='Name'
-            placeholderTextColor={'#ccc'}
+            placeholderTextColor={'#d9d9d9'}
             value={String(name)}
             onChangeText={(text) => setName(text) }
         />

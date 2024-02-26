@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, Alert } from 'react-native';
 import styles from '../styles/showRoutines.js'
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -105,7 +105,15 @@ export default function RoutineScreen() {
                 <TouchableOpacity onPress={() => updateRoutine(routine)}>
                   <Icon name="pencil" style={styles.editIcon} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => deleteRoutine(routine.name, index)}>
+                <TouchableOpacity onPress={() => Alert.alert(
+                  'Delete Routine',
+                  'Are you sure you want to delete this routine?',
+                  [
+                    { text: 'Back'},
+                    { text: 'Confirm', onPress: () => deleteRoutine(routine.name, index) },
+                  ],
+                  { cancelable: false}
+                )}>
                   <Icon name="trash" style={styles.deleteIcon} />
                 </TouchableOpacity>
               </View>

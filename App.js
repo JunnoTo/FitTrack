@@ -10,14 +10,13 @@ import Home from './components/Home';
 import CalorieCalculator from './components/CalorieCalculator';
 import CustomExercise from './components/CustomExercise';
 import Icon from "react-native-vector-icons/Ionicons";
-import RandomQuote from './components/RandomQuote';
 import BodyWeightTrack from './components/BodyWeightTrack';
 import CreateRoutine from './components/CreateRoutine';
 import ShowRoutines from './components/ShowRoutines';
 import ChartScreen from './components/ChartScreen';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
-  const [quoteAnimationComplete, setQuoteAnimationComplete] = useState(false);
   const Stack = createStackNavigator();
 
   const defaultHeaderStyle = {
@@ -34,30 +33,46 @@ export default function App() {
     },
     headerTitleAlign: 'center',
   };
-  const handleQuoteAnimationComplete = () => {
-    setQuoteAnimationComplete(true);
-  };
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#121212' }}>
-     
-      {!quoteAnimationComplete && <RandomQuote onComplete={handleQuoteAnimationComplete} />}
-      {quoteAnimationComplete && (
-        
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{...defaultHeaderStyle}}>
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{title: "FitTrack"}}
-        />
+    <>
+      <StatusBar/>
+          
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{...defaultHeaderStyle}}>
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{title: "FitTrack"}}
+          />
 
-        <Stack.Screen
-          name="ExerciseGroups"
-          component={ExerciseGroups}
-          options={({ navigation }) => ({
-            title: 'Select category',
+          <Stack.Screen
+            name="ExerciseGroups"
+            component={ExerciseGroups}
+            options={({ navigation }) => ({
+              title: 'Select category',
+              headerRight: () => (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('CustomExercise');
+                  }}
+                  >
+                    <Icon
+                      name="add"
+                      size={30}
+                      color="#D37506"
+                      style={{ marginRight: 10}}
+                    />
+                  </TouchableOpacity>
+              )
+            })}
+          />
+
+          <Stack.Screen
+            name="ExerciseList"
+            component={ExerciseList}
+            options={({ route, navigation }) => ({ title:`${route.params.category} Exercises`,
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => {
@@ -68,127 +83,105 @@ export default function App() {
                     name="add"
                     size={30}
                     color="#D37506"
-                    style={{ marginRight: 10}}
                   />
                 </TouchableOpacity>
-            )
-          })}
-        />
+            ) })}
+          />
 
-        <Stack.Screen
-          name="ExerciseList"
-          component={ExerciseList}
-          options={({ route, navigation }) => ({ title:`${route.params.category} Exercises`,
-          headerRight: () => (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('CustomExercise');
+          <Stack.Screen
+            name="WeightExercise"
+            component={WeightExercise}
+            options={({ route, navigation }) => ({ title:`${route.params.exercise} `,
+            headerTitleAlign: 'left',
+            headerLeft: () => (
+                <TouchableOpacity
+                  onPress={() => { navigation.navigate('Home');
               }}
               >
+              <View style={{ marginLeft: 20 }}>
                 <Icon
-                  name="add"
+                  name="home"
                   size={30}
                   color="#D37506"
                 />
+              </View>
               </TouchableOpacity>
-          ) })}
-        />
-
-        <Stack.Screen
-          name="WeightExercise"
-          component={WeightExercise}
-          options={({ route, navigation }) => ({ title:`${route.params.exercise} `,
-          headerTitleAlign: 'left',
-          headerLeft: () => (
+              ),
+              headerRight: () => null,
+            })}
+          />
+          
+          <Stack.Screen
+            name="TimeDistanceExercise"
+            component={TimeDistanceExercise}
+            options={({ route, navigation }) => ({ title:`${route.params.exercise} `,
+            headerTitleAlign: 'left',
+            headerLeft: () => (
               <TouchableOpacity
-                onPress={() => { navigation.navigate('Home');
-            }}
-            >
-            <View style={{ marginLeft: 20 }}>
+              onPress={() => { navigation.navigate('Home');
+          }}
+          >
+            <View style={{ marginLeft: 10 }}>
               <Icon
                 name="home"
                 size={30}
                 color="#D37506"
               />
             </View>
-            </TouchableOpacity>
-            ),
-            headerRight: () => null,
-          })}
-        />
-        
-        <Stack.Screen
-          name="TimeDistanceExercise"
-          component={TimeDistanceExercise}
-          options={({ route, navigation }) => ({ title:`${route.params.exercise} `,
-          headerTitleAlign: 'left',
-          headerLeft: () => (
-            <TouchableOpacity
-            onPress={() => { navigation.navigate('Home');
-        }}
-        >
-          <View style={{ marginLeft: 10 }}>
-            <Icon
-              name="home"
-              size={30}
-              color="#D37506"
-            />
-          </View>
-        </TouchableOpacity>
-            ),
-            headerRight: () => null,
-          })}
-        />
-        
-        <Stack.Screen
-          name="CalorieCalculator"
-          component={CalorieCalculator}
-          options={({ navigation }) => ({
-            headerTitle: 'Calorie Calculator',
-            headerTitleAlign: 'left',
-            headerLeft: () => (
-              <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-                <View style={{ marginLeft: 10 }}>
-                  <Icon name="home" size={30} color="#D37506" />
-                </View>
-              </TouchableOpacity>
-            ),
-            headerRight: () => null,
-          })}
-      />
-
-        <Stack.Screen
-          name ="CustomExercise"
-          component={CustomExercise}
-          options={{headerTitle: 'Create Exercise'}}
+          </TouchableOpacity>
+              ),
+              headerRight: () => null,
+            })}
+          />
+          
+          <Stack.Screen
+            name="CalorieCalculator"
+            component={CalorieCalculator}
+            options={({ navigation }) => ({
+              headerTitle: 'Calorie Calculator',
+              headerTitleAlign: 'left',
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                  <View style={{ marginLeft: 10 }}>
+                    <Icon name="home" size={30} color="#D37506" />
+                  </View>
+                </TouchableOpacity>
+              ),
+              headerRight: () => null,
+            })}
         />
 
-        <Stack.Screen
-          name="Body-weight"
-          component={BodyWeightTrack}
-          options={{headerTitle: 'Weight Log'}}
-        />
+          <Stack.Screen
+            name ="CustomExercise"
+            component={CustomExercise}
+            options={{headerTitle: 'Create Exercise'}}
+          />
 
-        <Stack.Screen
-          name="CreateRoutine"
-          component={CreateRoutine}
-          options={{headerTitle: 'Create Routine'}}
-        />
+          <Stack.Screen
+            name="Body-weight"
+            component={BodyWeightTrack}
+            options={{headerTitle: 'Weight Log'}}
+          />
 
-        <Stack.Screen
-          name="Routines"
-          component={ShowRoutines}
-        />
+          <Stack.Screen
+            name="CreateRoutine"
+            component={CreateRoutine}
+            options={{headerTitle: 'Create Routine'}}
+          />
 
-        <Stack.Screen
-          name="ChartScreen"
-          component={ChartScreen}
-          options={({ route }) => ({ title: route.params.exercise + ' Chart'})}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-     )}       
-    </View>
+          <Stack.Screen
+            name="Routines"
+            component={ShowRoutines}
+          />
+
+          <Stack.Screen
+            name="ChartScreen"
+            component={ChartScreen}
+            options={({ route }) => ({ title: route.params.exercise + ' Chart'})}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>   
+    </>
       );
 }
 

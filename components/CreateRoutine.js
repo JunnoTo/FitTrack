@@ -120,7 +120,7 @@ export default function CreateRoutineScreen({ route }) {
 
     const renderCustomExercises = () => {
       if (customExercises.length === 0) {
-        return <Text>No custom exercises found</Text>;
+        return <Text style={styles.customText}>No custom exercises found</Text>;
       }
       return (
         <View style={styles.categoryContainer}>
@@ -156,7 +156,7 @@ export default function CreateRoutineScreen({ route }) {
                 value={routineName}
                 onChangeText={(text) => setRoutineName(text)}
                 placeholder="Enter routine name"
-                placeholderTextColor={'gray'}
+                placeholderTextColor={'#fff'}
                 style={styles.input}
             />
               {Object.keys(exerciseData).map((category) => (
@@ -175,12 +175,14 @@ export default function CreateRoutineScreen({ route }) {
               </View>
                 ))}
                 {renderCustomExercises()}
-                <Text style={styles.title}>Selected Exercises:</Text>
+                <View style={styles.selectedContainer}>
+                <Text style={styles.selectedText}>Selected Exercises:</Text>
                 {selectedExercises.map((exercise, index) => (
                     <Text key={index} style={styles.exerciseText}>
                         {exercise}
                     </Text>
                 ))}
+                </View>
                 <TouchableOpacity onPress={handleSaveRoutine} style={styles.saveButton}>
                     <Text style={styles.saveButtonText}>Save Routine</Text>
                 </TouchableOpacity>
